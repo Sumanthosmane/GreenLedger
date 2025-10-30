@@ -1,0 +1,108 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid"
+      }
+    },
+    "usersV2": {
+      "$uid": {
+        ".read": "$uid === auth.uid || root.child('usersV2').child(auth.uid).child('personalInfo').child('role').val() === 'FARMER'",
+        ".write": "$uid === auth.uid",
+        ".validate": "newData.hasChildren(['userId', 'personalInfo', 'preferences', 'metadata'])",
+        "personalInfo": {
+          ".validate": "newData.hasChildren(['name', 'phone', 'role'])"
+        },
+        "metadata": {
+          ".validate": "newData.hasChildren(['createdAt', 'lastLogin', 'isActive'])"
+        }
+      }
+    },
+    "expenses": {
+      ".read": "auth != null",
+      ".indexOn": ["userId", "timestamp"],
+      "$expenseId": {
+        ".write": "auth != null && (!data.exists() || data.child('userId').val() === auth.uid)"
+      }
+    },
+    "rawMaterials": {
+      ".read": "auth != null",
+      ".indexOn": ["userId"],
+      "$materialId": {
+        ".write": "auth != null && (!data.exists() || data.child('userId').val() === auth.uid)"
+      }
+    },
+    "labour": {
+      ".read": "auth != null",
+      ".indexOn": ["userId", "workDate"],
+      "$labourId": {
+        ".write": "auth != null && (!data.exists() || data.child('userId').val() === auth.uid)"
+      }
+    },
+    "crops": {
+      ".read": "auth != null",
+      ".indexOn": ["userId", "status", "category"],
+      "$cropId": {
+        ".write": "auth != null && root.child('usersV2').child(auth.uid).child('personalInfo').child('role').val() === 'FARMER'",
+        ".validate": "newData.hasChildren(['cropId', 'userId', 'cropName', 'status'])"
+      }
+    },
+    "farmOperations": {
+      ".read": "auth != null",
+      ".indexOn": ["userId", "cropId", "operationDate"],
+      "$operationId": {
+        ".write": "auth != null && root.child('usersV2').child(auth.uid).child('personalInfo').child('role').val() === 'FARMER'"
+      }
+    },
+    "storage": {
+      ".read": "auth != null",
+      ".indexOn": ["userId", "storageType"],
+      "$storageId": {
+        ".write": "auth != null && root.child('usersV2').child(auth.uid).child('personalInfo').child('role').val() === 'FARMER'"
+      }
+    },
+    "labourRecords": {
+      ".read": "auth != null && (data.child('userId').val() === auth.uid || data.child('labourerId').val() === auth.uid || root.child('usersV2').child(auth.uid).child('personalInfo').child('role').val() === 'FARMER')",
+      ".indexOn": ["userId", "labourerId", "workDate", "shiftType"],
+      "$recordId": {
+        ".write": "auth != null && root.child('usersV2').child(auth.uid).child('personalInfo').child('role').val() === 'FARMER'"
+      }
+    },
+    "financialRecords": {
+      ".read": "auth != null && (data.child('userId').val() === auth.uid || root.child('usersV2').child(auth.uid).child('personalInfo').child('role').val() === 'BUSINESS_PARTNER')",
+      ".indexOn": ["userId", "transactionType", "timestamp"],
+      "$recordId": {
+        ".write": "auth != null && root.child('usersV2').child(auth.uid).child('personalInfo').child('role').val() === 'FARMER'"
+      }
+    },
+    "transactions": {
+      ".read": "auth != null && (data.child('userId').val() === auth.uid || root.child('usersV2').child(auth.uid).child('personalInfo').child('role').val() === 'BUSINESS_PARTNER')",
+      ".indexOn": ["userId", "transactionDate"],
+      "$transactionId": {
+        ".write": "auth != null && root.child('usersV2').child(auth.uid).child('personalInfo').child('role').val() === 'FARMER'"
+      }
+    },
+    "reports": {
+      ".read": "auth != null && (data.child('userId').val() === auth.uid || root.child('usersV2').child(auth.uid).child('personalInfo').child('role').val() === 'BUSINESS_PARTNER')",
+      ".indexOn": ["userId", "reportType", "generatedAt"],
+      "$reportId": {
+        ".write": "auth != null && newData.child('userId').val() === auth.uid"
+      }
+    },
+    "notifications": {
+      ".read": "auth != null && data.child('userId').val() === auth.uid",
+      ".indexOn": ["userId", "timestamp", "isRead"],
+      "$notificationId": {
+        ".write": "auth != null && (newData.child('userId').val() === auth.uid || root.child('usersV2').child(auth.uid).child('personalInfo').child('role').val() === 'FARMER')"
+      }
+    },
+    "analytics": {
+      ".read": "auth != null && (data.child('userId').val() === auth.uid || root.child('usersV2').child(auth.uid).child('personalInfo').child('role').val() === 'BUSINESS_PARTNER')",
+      ".indexOn": ["userId", "date"],
+      "$analyticsId": {
+        ".write": "auth != null && root.child('usersV2').child(auth.uid).child('personalInfo').child('role').val() === 'FARMER'"
+      }
+    }
+  }
+}

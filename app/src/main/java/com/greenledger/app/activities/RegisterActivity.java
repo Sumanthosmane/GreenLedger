@@ -18,6 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.greenledger.app.R;
 import com.greenledger.app.models.User;
+import com.greenledger.app.models.UserV2;
+import com.greenledger.app.models.enums.UserRole;
 import com.greenledger.app.utils.FirebaseHelper;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -52,9 +54,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void setupUserTypeDropdown() {
-        String[] userTypes = getResources().getStringArray(R.array.user_types);
+        // Use V2 user roles for new registrations
+        String[] userRoles = getResources().getStringArray(R.array.user_roles);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_dropdown_item_1line, userTypes);
+                android.R.layout.simple_dropdown_item_1line, userRoles);
         userTypeAutoComplete.setAdapter(adapter);
     }
 
@@ -96,9 +99,18 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void saveUserToDatabase(String userId, String name, String phone, String userType) {
+        // Save to both v1 and v2 collections for backward compatibility
         User user = new User(userId, name, phone, userType);
 
-        firebaseHelper.getUsersRef().child(userId).setValue(user)
+        // Convert userType string to UserRole enum
+        UserRole role = convertToUserRole(userType);
+        UserV2 userV2 = new UserV2(userId, name, phone, role);
+
+        // Save to v1 collection
+        firebaseHelper.getUsersRef().child(userId).setValue(user);
+
+        // Save to v2 collection
+        firebaseHelper.getUsersV2Ref().child(userId).setValue(userV2)
                 .addOnCompleteListener(task -> {
                     showLoading(false);
                     if (task.isSuccessful()) {
@@ -110,6 +122,19 @@ public class RegisterActivity extends AppCompatActivity {
                                 "Failed to save user data", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private UserRole convertToUserRole(String userType) {
+        switch (userType) {
+            case "Farmer":
+                return UserRole.FARMER;
+            case "Labourer":
+                return UserRole.LABOURER;
+            case "Business Partner":
+                return UserRole.BUSINESS_PARTNER;
+            default:
+                return UserRole.FARMER;
+        }
     }
 
     private boolean validateInput(String name, String phone, String userType,

@@ -17,6 +17,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.greenledger.app.R;
+import com.greenledger.app.models.UserV2;
 import com.greenledger.app.utils.FirebaseHelper;
 
 public class LoginActivity extends AppCompatActivity {
@@ -74,7 +75,11 @@ public class LoginActivity extends AppCompatActivity {
         firebaseHelper.getAuth().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Login successful
+                        // Login successful - update last login timestamp in UserV2
+                        String userId = firebaseHelper.getCurrentUserId();
+                        if (userId != null) {
+                            updateLastLogin(userId);
+                        }
                         navigateToDashboard();
                     } else {
                         showLoading(false);
@@ -111,6 +116,12 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    private void updateLastLogin(String userId) {
+        // Update lastLogin timestamp in UserV2
+        firebaseHelper.getUsersV2Ref().child(userId).child("metadata")
+                .child("lastLogin").setValue(System.currentTimeMillis());
     }
 
     private void showLoading(boolean show) {

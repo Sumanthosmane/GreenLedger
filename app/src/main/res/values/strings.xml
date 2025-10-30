@@ -72,6 +72,13 @@
         <item>Labourer</item>
     </string-array>
 
+    <!-- User Roles (V2) -->
+    <string-array name="user_roles">
+        <item>Farmer</item>
+        <item>Labourer</item>
+        <item>Business Partner</item>
+    </string-array>
+
     <!-- Expense Categories -->
     <string-array name="expense_categories">
         <item>Seeds</item>
