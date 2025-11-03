@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.greenledger.app.R;
 import com.greenledger.app.models.User;
+import com.greenledger.app.models.UserV2;
 import com.greenledger.app.utils.FirebaseHelper;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -70,6 +71,34 @@ public class DashboardActivity extends AppCompatActivity {
     private void loadUserData() {
         String userId = firebaseHelper.getCurrentUserId();
         if (userId != null) {
+            // Try loading from usersV2 first (new users)
+            firebaseHelper.getUsersV2Ref().child(userId).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                UserV2 userV2 = snapshot.getValue(UserV2.class);
+                                if (userV2 != null) {
+                                    userNameText.setText(userV2.getName());
+                                }
+                            } else {
+                                // Fallback to old users collection for backward compatibility
+                                loadUserDataFromV1();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            // Fallback to v1 on error
+                            loadUserDataFromV1();
+                        }
+                    });
+        }
+    }
+
+    private void loadUserDataFromV1() {
+        String userId = firebaseHelper.getCurrentUserId();
+        if (userId != null) {
             firebaseHelper.getUsersRef().child(userId).addListenerForSingleValueEvent(
                     new ValueEventListener() {
                         @Override
@@ -77,6 +106,8 @@ public class DashboardActivity extends AppCompatActivity {
                             User user = snapshot.getValue(User.class);
                             if (user != null) {
                                 userNameText.setText(user.getName());
+                            } else {
+                                userNameText.setText("User");
                             }
                         }
 
@@ -84,6 +115,7 @@ public class DashboardActivity extends AppCompatActivity {
                         public void onCancelled(@NonNull DatabaseError error) {
                             Toast.makeText(DashboardActivity.this,
                                     "Failed to load user data", Toast.LENGTH_SHORT).show();
+                            userNameText.setText("User");
                         }
                     });
         }

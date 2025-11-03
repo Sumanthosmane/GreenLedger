@@ -1,35 +1,20 @@
 package com.greenledger.app.models.embedded;
 
 public class Location {
-    private double latitude;
-    private double longitude;
     private String address;
+    private String district;
+    private String state;
+    private String pincode;
 
     public Location() {
         // Required empty constructor for Firebase
     }
 
-    public Location(double latitude, double longitude, String address) {
-        this.latitude = latitude;
-        this.longitude = longitude;
+    public Location(String address, String district, String state, String pincode) {
         this.address = address;
-    }
-
-    // Getters and setters
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+        this.district = district;
+        this.state = state;
+        this.pincode = pincode;
     }
 
     public String getAddress() {
@@ -40,7 +25,32 @@ public class Location {
         this.address = address;
     }
 
-    public String getCoordinates() {
-        return latitude + ", " + longitude;
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getPincode() {
+        return pincode;
+    }
+
+    public void setPincode(String pincode) {
+        this.pincode = pincode;
+    }
+
+    @Override
+    public String toString() {
+        return address + "\n" + district + ", " + state + " - " + pincode;
     }
 }

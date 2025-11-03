@@ -2,100 +2,187 @@
 <resources>
     <string name="app_name">GreenLedger</string>
 
-    <!-- Login Screen -->
-    <string name="login_title">Login</string>
-    <string name="phone_number">Phone Number</string>
-    <string name="password">Password</string>
-    <string name="login_button">Login</string>
-    <string name="register_link">Don\'t have an account? Register</string>
+    <!-- Common -->
+    <string name="save_changes">Save Changes</string>
+    <string name="delete">Delete</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
 
-    <!-- Register Screen -->
-    <string name="register_title">Register</string>
-    <string name="full_name">Full Name</string>
-    <string name="confirm_password">Confirm Password</string>
-    <string name="user_type">User Type</string>
-    <string name="register_button">Register</string>
-    <string name="login_link">Already have an account? Login</string>
+    <!-- Farm Management -->
+    <string name="farm_name">Farm Name</string>
+    <string name="total_area">Total Area (acres)</string>
+    <string name="soil_type">Soil Type</string>
+    <string name="irrigation_type">Irrigation Type</string>
+    <string name="location">Location</string>
+    <string name="pick_location">Pick Location</string>
+    <string name="add_plot">Add Plot</string>
+    <string name="add_farm">Add Farm</string>
+    <string name="delete_farm">Delete Farm</string>
+    <string name="no_farms">No Farms Yet</string>
+    <string name="add_first_farm">Add your first farm by clicking the + button</string>
+
+    <!-- Crop Management -->
+    <string name="crop_type">Crop Type</string>
+    <string name="crop_variety">Variety</string>
+    <string name="crop_category">Category</string>
+    <string name="expected_yield">Expected Yield</string>
+    <string name="actual_yield">Actual Yield</string>
+    <string name="add_crop">Add Crop</string>
+    <string name="delete_crop">Delete Crop</string>
+    <string name="add_stage">Add Stage</string>
+    <string name="no_crops">No Crops Yet</string>
+    <string name="add_first_crop">Add your first crop by clicking the + button</string>
+
+    <!-- Storage Management -->
+    <string name="storage_name">Storage Name</string>
+    <string name="storage_type">Storage Type</string>
+    <string name="capacity">Capacity (quintals)</string>
+    <string name="current_occupancy">Current Occupancy</string>
+    <string name="add_storage">Add Storage</string>
+    <string name="delete_storage">Delete Storage</string>
+    <string name="add_item">Add Item</string>
+    <string name="no_storage">No Storage Units Yet</string>
+    <string name="add_first_storage">Add your first storage unit by clicking the + button</string>
+
+    <!-- Quality -->
+    <string name="grade">Grade</string>
+    <string name="moisture_level">Moisture Level (%)</string>
+    <string name="purity_level">Purity Level (%)</string>
 
     <!-- Dashboard -->
-    <string name="dashboard_title">Dashboard</string>
-    <string name="welcome">Welcome</string>
+    <string name="dashboard_title">GreenLedger Dashboard</string>
+    <string name="welcome">Welcome, %1$s!</string>
+    <string name="loading">Loading...</string>
     <string name="expense_management">Expense Management</string>
     <string name="raw_materials">Raw Materials</string>
     <string name="labour_management">Labour Management</string>
     <string name="logout">Logout</string>
 
-    <!-- Expense Management -->
+    <!-- Expense -->
     <string name="expense_title">Expense Management</string>
     <string name="add_expense">Add Expense</string>
+
+    <!-- Labour -->
+    <string name="labour_title">Labour Management</string>
+    <string name="add_labour">Add Labour</string>
+
+    <!-- Login -->
+    <string name="login_title">Login to GreenLedger</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="password">Password</string>
+
+    <!-- Authentication -->
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="registration_title">Create Account</string>
+
+    <!-- Common Actions -->
+    <string name="submit">Submit</string>
+    <string name="confirm">Confirm</string>
+    <string name="back">Back</string>
+    <string name="next">Next</string>
+    <string name="done">Done</string>
+
+    <!-- Error Messages -->
+    <string name="error_required_field">This field is required</string>
+    <string name="error_invalid_phone">Invalid phone number</string>
+    <string name="error_invalid_password">Password must be at least 6 characters</string>
+    <string name="error_network">Network error. Please try again.</string>
+    <string name="error_unknown">An unknown error occurred</string>
+
+    <!-- Login Screen -->
+    <string name="login_button">Log In</string>
+    <string name="register_link">Don\'t have an account? Register here</string>
+
+    <!-- Register Screen -->
+    <string name="register_title">Create New Account</string>
+    <string name="full_name">Full Name</string>
+    <string name="user_type">User Type</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register_button">Register</string>
+    <string name="login_link">Already have an account? Login here</string>
+
+    <!-- Raw Material -->
+    <string name="raw_material_title">Raw Materials</string>
+    <string name="add_material">Add Material</string>
+
+    <!-- Add Expense Dialog -->
     <string name="expense_category">Category</string>
     <string name="expense_amount">Amount</string>
     <string name="expense_description">Description</string>
     <string name="expense_date">Date</string>
     <string name="save_expense">Save Expense</string>
 
-    <!-- Raw Materials -->
-    <string name="raw_material_title">Raw Materials</string>
-    <string name="add_material">Add Material</string>
-    <string name="material_name">Material Name</string>
-    <string name="material_quantity">Quantity</string>
-    <string name="material_unit">Unit</string>
-    <string name="material_cost">Cost per Unit</string>
-    <string name="save_material">Save Material</string>
-
-    <!-- Labour Management -->
-    <string name="labour_title">Labour Management</string>
-    <string name="add_labour">Add Labour</string>
-    <string name="labour_name">Labour Name</string>
+    <!-- Add Labour Dialog -->
+    <string name="labour_name">Worker Name</string>
     <string name="labour_phone">Phone Number</string>
     <string name="hours_worked">Hours Worked</string>
     <string name="hourly_rate">Hourly Rate</string>
     <string name="work_date">Work Date</string>
+
+    <!-- Add Labour Dialog (Additional) -->
     <string name="work_description">Work Description</string>
-    <string name="save_labour">Save Labour Entry</string>
+    <string name="save_labour">Save Labour</string>
 
-    <!-- Common -->
-    <string name="cancel">Cancel</string>
-    <string name="delete">Delete</string>
-    <string name="edit">Edit</string>
+    <!-- Add Material Dialog -->
+    <string name="material_name">Material Name</string>
+    <string name="material_quantity">Quantity</string>
+    <string name="material_unit">Unit</string>
+    <string name="material_cost">Cost</string>
+    <string name="save_material">Save Material</string>
+
+    <!-- Material Units -->
+    <string name="unit_kg">Kilograms (kg)</string>
+    <string name="unit_quintal">Quintals</string>
+    <string name="unit_ton">Tons</string>
+    <string name="unit_piece">Pieces</string>
+    <string name="unit_packet">Packets</string>
+    <string name="unit_bag">Bags</string>
+    <string name="unit_bottle">Bottles</string>
+
+    <!-- Dialog Common -->
     <string name="save">Save</string>
-    <string name="loading">Loading…</string>
+    <string name="select_date">Select Date</string>
+    <string name="select_time">Select Time</string>
+    <string name="select">Select</string>
+    <string name="cancel_button">Cancel</string>
+
+    <!-- Progress Messages -->
+    <string name="saving">Saving...</string>
+    <string name="deleting">Deleting...</string>
+    <string name="updating">Updating...</string>
+    <string name="uploading">Uploading...</string>
+
+    <!-- Success Messages -->
+    <string name="success_save">Successfully saved</string>
+    <string name="success_delete">Successfully deleted</string>
+    <string name="success_update">Successfully updated</string>
+    <string name="success_upload">Successfully uploaded</string>
+
+    <!-- Error Messages (Additional) -->
+    <string name="error_save">Failed to save</string>
+    <string name="error_delete">Failed to delete</string>
+    <string name="error_update">Failed to update</string>
+    <string name="error_upload">Failed to upload</string>
+    <string name="error_date">Invalid date</string>
+    <string name="error_time">Invalid time</string>
+    <string name="error_amount">Invalid amount</string>
+    <string name="error_hours">Invalid hours</string>
+    <string name="error_rate">Invalid rate</string>
     <string name="error_empty_field">This field cannot be empty</string>
-    <string name="error_invalid_phone">Invalid phone number</string>
     <string name="error_password_mismatch">Passwords do not match</string>
-    <string name="error_network">Network error. Please try again.</string>
-    <string name="success">Success</string>
+    <string name="error_invalid_input">Invalid input</string>
+    <string name="error_invalid_email">Invalid email address</string>
+    <string name="error_password_length">Password must be at least 6 characters long</string>
+    <string name="error_server">Server error. Please try again.</string>
+    <string name="error_validation">Please check your input</string>
 
-    <!-- User Types -->
-    <string-array name="user_types">
-        <item>Farmer</item>
-        <item>Labourer</item>
-    </string-array>
-
-    <!-- User Roles (V2) -->
-    <string-array name="user_roles">
-        <item>Farmer</item>
-        <item>Labourer</item>
-        <item>Business Partner</item>
-    </string-array>
-
-    <!-- Expense Categories -->
-    <string-array name="expense_categories">
-        <item>Seeds</item>
-        <item>Fertilizers</item>
-        <item>Pesticides</item>
-        <item>Equipment</item>
-        <item>Labour</item>
-        <item>Water/Irrigation</item>
-        <item>Transportation</item>
-        <item>Other</item>
-    </string-array>
-
-    <!-- Units -->
-    <string-array name="material_units">
-        <item>kg</item>
-        <item>liters</item>
-        <item>bags</item>
-        <item>units</item>
-    </string-array>
+    <!-- Location Input -->
+    <string name="enter_location">Enter Location Details</string>
+    <string name="address">Address</string>
+    <string name="district">District</string>
+    <string name="state">State</string>
+    <string name="pincode">PIN Code</string>
+    <string name="error_invalid_pincode">PIN code must be 6 digits</string>
 </resources>

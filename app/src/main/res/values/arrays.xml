@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- User Roles -->
+    <string-array name="user_roles">
+        <item>ADMIN</item>
+        <item>FARMER</item>
+        <item>WORKER</item>
+    </string-array>
+
+    <!-- Expense Categories -->
+    <string-array name="expense_categories">
+        <item>Seeds</item>
+        <item>Fertilizers</item>
+        <item>Pesticides</item>
+        <item>Equipment</item>
+        <item>Labour</item>
+        <item>Transportation</item>
+        <item>Storage</item>
+        <item>Others</item>
+    </string-array>
+
+    <!-- Material Units -->
+    <string-array name="material_units">
+        <item>@string/unit_kg</item>
+        <item>@string/unit_quintal</item>
+        <item>@string/unit_ton</item>
+        <item>@string/unit_piece</item>
+        <item>@string/unit_packet</item>
+        <item>@string/unit_bag</item>
+        <item>@string/unit_bottle</item>
+    </string-array>
+
+    <!-- Soil Types -->
+    <string-array name="soil_types">
+        <item>Alluvial</item>
+        <item>Black</item>
+        <item>Red</item>
+        <item>Laterite</item>
+        <item>Mountainous</item>
+        <item>Desert</item>
+    </string-array>
+
+    <!-- Irrigation Types -->
+    <string-array name="irrigation_types">
+        <item>Drip</item>
+        <item>Sprinkler</item>
+        <item>Flood</item>
+        <item>Furrow</item>
+        <item>Basin</item>
+        <item>Border Strip</item>
+    </string-array>
+
+    <!-- Storage Types -->
+    <string-array name="storage_types">
+        <item>Barn</item>
+        <item>Warehouse</item>
+        <item>Cold Storage</item>
+        <item>Open Storage</item>
+    </string-array>
+</resources>

@@ -3,6 +3,10 @@ package com.greenledger.app.utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.greenledger.app.models.Farm;
+import com.greenledger.app.models.Crop;
+import com.greenledger.app.models.CropStage;
+import com.greenledger.app.models.Storage;
 import com.greenledger.app.models.User;
 import com.greenledger.app.models.UserV2;
 
@@ -125,6 +129,49 @@ public class FirebaseHelper {
         return database.child("notifications").orderByChild("userId").equalTo(userId).getRef();
     }
 
+    // Farm Management References
+    public DatabaseReference getFarmsRef() {
+        return database.child("farms");
+    }
+
+    public DatabaseReference getFarmsByUserRef(String userId) {
+        return database.child("farms").orderByChild("farmerId").equalTo(userId).getRef();
+    }
+
+    public DatabaseReference getFarmCropsRef(String farmId) {
+        return database.child("crops").orderByChild("farmId").equalTo(farmId).getRef();
+    }
+
+    public DatabaseReference getFarmStorageRef(String farmId) {
+        return database.child("storage").orderByChild("farmId").equalTo(farmId).getRef();
+    }
+
+    public DatabaseReference getFarmExpensesRef(String farmId) {
+        return database.child("expenses").orderByChild("farmId").equalTo(farmId).getRef();
+    }
+
+    public DatabaseReference getFarmLabourRef(String farmId) {
+        return database.child("labour").orderByChild("farmId").equalTo(farmId).getRef();
+    }
+
+    // Storage Management References
+    public DatabaseReference getStorageByUserRef(String userId) {
+        return database.child("storage").orderByChild("farmerId").equalTo(userId).getRef();
+    }
+
+    public DatabaseReference getStorageInventoryRef(String storageId) {
+        return database.child("storage").child(storageId).child("inventory");
+    }
+
+    // Crops Management References
+    public DatabaseReference getCropsByUserRef(String userId) {
+        return database.child("crops").orderByChild("farmerId").equalTo(userId).getRef();
+    }
+
+    public DatabaseReference getCropStagesRef(String cropId) {
+        return database.child("crops").child(cropId).child("lifecycle").child("stages");
+    }
+
     // Helper methods
     public String getCurrentUserId() {
         return auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : null;
@@ -136,5 +183,46 @@ public class FirebaseHelper {
 
     public void logout() {
         auth.signOut();
+    }
+
+    public void addFarm(Farm farm, DatabaseReference.CompletionListener listener) {
+        String farmId = getFarmsRef().push().getKey();
+        if (farmId != null) {
+            farm.setFarmId(farmId);
+            farm.setFarmerId(getCurrentUserId());
+            farm.getMetadata().setCreatedAt(System.currentTimeMillis());
+            farm.getMetadata().setUpdatedAt(System.currentTimeMillis());
+            getFarmsRef().child(farmId).setValue(farm, listener);
+        }
+    }
+
+    public void addCrop(Crop crop, DatabaseReference.CompletionListener listener) {
+        String cropId = getCropsRef().push().getKey();
+        if (cropId != null) {
+            crop.setCropId(cropId);
+            crop.setFarmerId(getCurrentUserId());
+            crop.getMetadata().setCreatedAt(System.currentTimeMillis());
+            crop.getMetadata().setUpdatedAt(System.currentTimeMillis());
+            crop.getMetadata().setCreatedBy(getCurrentUserId());
+            getCropsRef().child(cropId).setValue(crop, listener);
+        }
+    }
+
+    public void addStorage(Storage storage, DatabaseReference.CompletionListener listener) {
+        String storageId = getStorageRef().push().getKey();
+        if (storageId != null) {
+            storage.setStorageId(storageId);
+            storage.setFarmerId(getCurrentUserId());
+            storage.getMetadata().setCreatedAt(System.currentTimeMillis());
+            storage.getMetadata().setUpdatedAt(System.currentTimeMillis());
+            getStorageRef().child(storageId).setValue(storage, listener);
+        }
+    }
+
+    public void updateCropStage(String cropId, CropStage stage, DatabaseReference.CompletionListener listener) {
+        String stageId = getCropStagesRef(cropId).push().getKey();
+        if (stageId != null) {
+            getCropStagesRef(cropId).child(stageId).setValue(stage, listener);
+        }
     }
 }

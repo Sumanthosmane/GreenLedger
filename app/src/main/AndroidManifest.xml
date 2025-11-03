@@ -4,6 +4,14 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+
+    <!-- Hardware feature declarations -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -49,6 +57,54 @@
             android:name=".activities.LabourActivity"
             android:exported="false"
             android:parentActivityName=".activities.DashboardActivity" />
+
+        <!-- Farm Management -->
+        <activity
+            android:name=".activities.FarmListActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.DashboardActivity" />
+
+        <activity
+            android:name=".activities.FarmDetailsActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.FarmListActivity" />
+
+        <activity
+            android:name=".activities.AddFarmActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.FarmListActivity" />
+
+        <!-- Crop Management -->
+        <activity
+            android:name=".activities.CropListActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.DashboardActivity" />
+
+        <activity
+            android:name=".activities.CropDetailsActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.CropListActivity" />
+
+        <activity
+            android:name=".activities.AddCropActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.CropListActivity" />
+
+        <!-- Storage Management -->
+        <activity
+            android:name=".activities.StorageListActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.DashboardActivity" />
+
+        <activity
+            android:name=".activities.StorageDetailsActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.StorageListActivity" />
+
+        <activity
+            android:name=".activities.AddStorageActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.StorageListActivity" />
 
     </application>
 

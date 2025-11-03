@@ -6,7 +6,7 @@ GreenLedger v2.0 represents a major evolution from a simple expense tracking app
 
 ---
 
-## Current State (v1.0)
+## Current State (v1.0 → v2.0)
 
 ### Implemented Features ✅
 - Phone-based authentication
@@ -16,13 +16,39 @@ GreenLedger v2.0 represents a major evolution from a simple expense tracking app
 - Labour time tracking
 - Firebase real-time sync
 - Material Design UI
+- Farm Management (Phase 2) ✅
+  - Multiple farms per farmer
+  - Land plot segmentation
+  - Simple location tracking (address-based)
+  - Soil and irrigation type tracking
+- Crop Lifecycle Management (Phase 2) ✅
+  - Complete lifecycle tracking
+  - Stage-wise documentation with photos
+  - Labourer assignment per stage
+  - Cost tracking per stage
+  - Quality and quantity tracking
+- Storage Management (Phase 2) ✅
+  - Multiple storage facilities
+  - Capacity and occupancy tracking
+  - Inventory management
+  - Storage cost allocation
+
+### Recent Changes
+- Simplified location input system
+  - Manual address entry
+  - District and state tracking
+  - PIN code validation
+  - Removed Google Maps dependency for cost efficiency
+- Enhanced Firebase integration
+  - Secure data rules implementation
+  - Storage for crop/farm images
+  - Real-time data sync
 
 ### Limitations
 - Single user role (Farmer only)
-- No crop lifecycle tracking
 - Limited financial insights
 - No work scheduling
-- No reporting/analytics
+- Basic reporting/analytics
 - No offline support
 
 ---
@@ -348,19 +374,37 @@ GreenLedger v2.0 represents a major evolution from a simple expense tracking app
 
 ---
 
-### Phase 2: Core Features (Weeks 3-6)
-- Farm management
-- Crop lifecycle tracking
-- Storage management
-- Enhanced financial tracking
-- Labour management v2
+### Phase 2: Core Features (Weeks 3-6) ✅
+- Farm management ✅
+  - Farm creation and management
+  - Land plot tracking
+  - Simple location system
+  - Soil and irrigation data
+- Crop lifecycle tracking ✅
+  - Full lifecycle management
+  - Stage documentation
+  - Image upload support
+  - Cost allocation
+- Storage management ✅
+  - Storage unit tracking
+  - Capacity management
+  - Inventory system
+  - Cost tracking
+- Enhanced financial tracking ✅
+  - Basic expense tracking
+  - Material cost allocation
+  - Labour cost tracking
+- Labour management v2 ✅
+  - Basic time tracking
+  - Work assignment
+  - Payment calculation
 
 **Deliverables**:
-- Farm CRUD operations
-- Crop tracking system
-- Storage module
-- Payment tracking
-- Attendance system
+- Farm CRUD operations ✅
+- Crop tracking system ✅
+- Storage module ✅
+- Basic payment tracking ✅
+- Simple attendance system ✅
 
 ---
 
