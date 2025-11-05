@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search"
+        android:title="Search Partners"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView"/>
+
+    <item
+        android:id="@+id/filter_buyer"
+        android:title="Buyers Only"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/filter_supplier"
+        android:title="Suppliers Only"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/sort_rating"
+        android:title="Sort by Rating"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/sort_transactions"
+        android:title="Sort by Transactions"
+        app:showAsAction="never"/>
+</menu>

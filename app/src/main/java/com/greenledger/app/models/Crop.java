@@ -374,4 +374,8 @@ public class Crop {
     public void setMetadata(Metadata metadata) {
         this.metadata = metadata;
     }
+
+    public String getName() {
+        return cropInfo != null ? cropInfo.getName() : "";
+    }
 }

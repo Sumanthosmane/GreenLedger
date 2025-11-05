@@ -164,4 +164,8 @@ public class Farm {
                 .filter(land -> "Occupied".equals(land.getStatus()))
                 .count();
     }
+
+    public String getName() {
+        return farmDetails != null ? farmDetails.getName() : "";
+    }
 }

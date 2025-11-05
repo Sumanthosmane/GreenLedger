@@ -172,6 +172,15 @@ public class FirebaseHelper {
         return database.child("crops").child(cropId).child("lifecycle").child("stages");
     }
 
+    // Sales and Buyers References
+    public DatabaseReference getSalesRef() {
+        return database.child("sales");
+    }
+
+    public DatabaseReference getBuyersRef() {
+        return database.child("buyers");
+    }
+
     // Helper methods
     public String getCurrentUserId() {
         return auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : null;

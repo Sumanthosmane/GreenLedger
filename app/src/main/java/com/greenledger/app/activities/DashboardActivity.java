@@ -23,7 +23,7 @@ import com.greenledger.app.utils.FirebaseHelper;
 public class DashboardActivity extends AppCompatActivity {
     private MaterialToolbar toolbar;
     private TextView userNameText;
-    private MaterialCardView expenseCard, rawMaterialCard, labourCard;
+    private MaterialCardView expenseCard, rawMaterialCard, labourCard, salesCard, reportsCard;
     private MaterialButton logoutButton;
     private FirebaseHelper firebaseHelper;
 
@@ -51,6 +51,8 @@ public class DashboardActivity extends AppCompatActivity {
         expenseCard = findViewById(R.id.expenseCard);
         rawMaterialCard = findViewById(R.id.rawMaterialCard);
         labourCard = findViewById(R.id.labourCard);
+        salesCard = findViewById(R.id.salesCard);
+        reportsCard = findViewById(R.id.reportsCard);
         logoutButton = findViewById(R.id.logoutButton);
     }
 
@@ -79,7 +81,7 @@ public class DashboardActivity extends AppCompatActivity {
                             if (snapshot.exists()) {
                                 UserV2 userV2 = snapshot.getValue(UserV2.class);
                                 if (userV2 != null) {
-                                    userNameText.setText(userV2.getName());
+                                    userNameText.setText(getString(R.string.welcome, userV2.getName()));
                                 }
                             } else {
                                 // Fallback to old users collection for backward compatibility
@@ -105,9 +107,9 @@ public class DashboardActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             User user = snapshot.getValue(User.class);
                             if (user != null) {
-                                userNameText.setText(user.getName());
+                                userNameText.setText(getString(R.string.welcome, user.getName()));
                             } else {
-                                userNameText.setText("User");
+                                userNameText.setText(getString(R.string.welcome, "User"));
                             }
                         }
 
@@ -115,7 +117,7 @@ public class DashboardActivity extends AppCompatActivity {
                         public void onCancelled(@NonNull DatabaseError error) {
                             Toast.makeText(DashboardActivity.this,
                                     "Failed to load user data", Toast.LENGTH_SHORT).show();
-                            userNameText.setText("User");
+                            userNameText.setText(getString(R.string.welcome, "User"));
                         }
                     });
         }
@@ -132,6 +134,14 @@ public class DashboardActivity extends AppCompatActivity {
 
         labourCard.setOnClickListener(v -> {
             startActivity(new Intent(DashboardActivity.this, LabourActivity.class));
+        });
+
+        salesCard.setOnClickListener(v -> {
+            startActivity(new Intent(DashboardActivity.this, SalesListActivity.class));
+        });
+
+        reportsCard.setOnClickListener(v -> {
+            startActivity(new Intent(DashboardActivity.this, ReportActivity.class));
         });
 
         logoutButton.setOnClickListener(v -> logout());

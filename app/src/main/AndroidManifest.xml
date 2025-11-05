@@ -8,12 +8,15 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <!-- Hardware feature declarations -->
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
 
     <application
+        android:name=".GreenLedgerApplication"
         android:allowBackup="true"
         android:enableOnBackInvokedCallback="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -101,10 +104,87 @@
             android:exported="false"
             android:parentActivityName=".activities.StorageListActivity" />
 
+        <!-- Schedule Management -->
+        <activity
+            android:name=".ui.schedule.ScheduleActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.DashboardActivity" />
+
+        <activity
+            android:name=".ui.schedule.AddScheduleActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.schedule.ScheduleActivity" />
+
+        <activity
+            android:name=".ui.schedule.ScheduleDetailsActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.schedule.ScheduleActivity" />
+
+        <!-- Business Partner Management -->
+        <activity
+            android:name=".ui.partner.BusinessPartnerActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.DashboardActivity" />
+
+        <activity
+            android:name=".ui.partner.AddBusinessPartnerActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.partner.BusinessPartnerActivity" />
+
+        <activity
+            android:name=".ui.partner.BusinessPartnerDetailsActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.partner.BusinessPartnerActivity" />
+            android:parentActivityName=".activities.StorageListActivity" />
+
         <activity
             android:name=".activities.AddStorageActivity"
             android:exported="false"
             android:parentActivityName=".activities.StorageListActivity" />
+
+        <!-- Sales Management -->
+        <activity
+            android:name=".activities.SalesListActivity"
+            android:exported="false"
+            android:label="@string/sales_management"
+            android:parentActivityName=".activities.DashboardActivity" />
+
+        <activity
+            android:name=".activities.AddSaleActivity"
+            android:exported="false"
+            android:label="@string/add_sale"
+            android:parentActivityName=".activities.SalesListActivity" />
+
+        <activity
+            android:name=".activities.SaleDetailsActivity"
+            android:exported="false"
+            android:label="@string/sales_management"
+            android:parentActivityName=".activities.SalesListActivity" />
+
+        <activity
+            android:name=".activities.BuyerListActivity"
+            android:exported="false"
+            android:label="@string/buyer_management"
+            android:parentActivityName=".activities.DashboardActivity" />
+
+        <activity
+            android:name=".activities.AddBuyerActivity"
+            android:exported="false"
+            android:label="@string/add_buyer"
+            android:parentActivityName=".activities.BuyerListActivity" />
+
+        <activity
+            android:name=".activities.BuyerDetailsActivity"
+            android:exported="false"
+            android:label="@string/buyer_management"
+            android:parentActivityName=".activities.BuyerListActivity" />
+
+        <!-- Reports & Analytics -->
+        <activity
+            android:name=".activities.ReportActivity"
+            android:exported="false"
+            android:label="@string/reports_analytics"
+            android:parentActivityName=".activities.DashboardActivity" />
 
     </application>
 

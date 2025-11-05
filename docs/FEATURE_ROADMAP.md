@@ -9,29 +9,51 @@ GreenLedger v2.0 represents a major evolution from a simple expense tracking app
 ## Current State (v1.0 → v2.0)
 
 ### Implemented Features ✅
+
+#### Phase 1: Foundation ✅
 - Phone-based authentication
-- Basic user profiles
+- Enhanced user profiles with bank details
 - Expense tracking with categories
-- Raw materials inventory
-- Labour time tracking
+- Raw materials inventory management
+- Labour time and cost tracking
 - Firebase real-time sync
-- Material Design UI
-- Farm Management (Phase 2) ✅
-  - Multiple farms per farmer
-  - Land plot segmentation
-  - Simple location tracking (address-based)
-  - Soil and irrigation type tracking
-- Crop Lifecycle Management (Phase 2) ✅
-  - Complete lifecycle tracking
-  - Stage-wise documentation with photos
-  - Labourer assignment per stage
-  - Cost tracking per stage
+- Material Design UI implementation
+- Offline data support with Room database
+
+#### Phase 2: Core Features ✅
+- Farm Management
+  - Multiple farms per farmer support
+  - Land plot segmentation and tracking
+  - Location tracking with address system
+  - Soil type and irrigation management
+  - Detailed farm metadata tracking
+- Crop Lifecycle Management
+  - Complete lifecycle tracking from planning to harvest
+  - Stage-wise documentation with photo support
+  - Labor assignment and tracking per stage
+  - Detailed cost tracking per stage
   - Quality and quantity tracking
-- Storage Management (Phase 2) ✅
-  - Multiple storage facilities
+  - Harvest management
+- Storage Management
+  - Multiple storage facility support
   - Capacity and occupancy tracking
-  - Inventory management
+  - Real-time inventory management
   - Storage cost allocation
+  - Quality preservation tracking
+
+#### Phase 3: Access Control & Enhancement ✅
+- Role-Based Access Control
+  - Multiple user roles (Farmer, Labour, Business Partner)
+  - Role-specific permissions and views
+  - Secure data access implementation
+- Business Partner Management
+  - Partner profiles and tracking
+  - Transaction history
+  - Payment tracking
+- Enhanced Financial Management
+  - Multiple payment modes
+  - Transaction tracking
+  - Basic financial reporting
 
 ### Recent Changes
 - Simplified location input system

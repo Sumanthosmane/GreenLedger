@@ -38,4 +38,11 @@ public class CropInfo {
     public void setCategory(String category) {
         this.category = category;
     }
+
+    public String getName() {
+        if (variety != null && !variety.isEmpty()) {
+            return type + " - " + variety;
+        }
+        return type;
+    }
 }

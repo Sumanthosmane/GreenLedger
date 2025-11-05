@@ -185,4 +185,49 @@
     <string name="state">State</string>
     <string name="pincode">PIN Code</string>
     <string name="error_invalid_pincode">PIN code must be 6 digits</string>
+
+    <!-- Sales Management -->
+    <string name="sales_management">Sales Management</string>
+    <string name="add_sale">Add Sale</string>
+    <string name="delete_sale">Delete Sale</string>
+    <string name="select_buyer">Select Buyer</string>
+    <string name="select_farm">Select Farm</string>
+    <string name="select_crop">Select Crop</string>
+    <string name="quantity">Quantity</string>
+    <string name="unit">Unit</string>
+    <string name="price_per_unit">Price per Unit (₹)</string>
+    <string name="total_amount">Total Amount (₹)</string>
+    <string name="notes">Notes</string>
+    <string name="generate_invoice">Generate Invoice</string>
+    <string name="share_invoice">Share Invoice</string>
+    <string name="invoice_generated">Invoice Generated</string>
+    <string name="invoice_shared">Invoice Shared</string>
+    <string name="no_sales">No Sales Yet</string>
+    <string name="add_first_sale">Add your first sale by clicking the + button</string>
+    <string name="sale_id_format">%1$s #%2$s</string>
+
+    <!-- Buyer Management -->
+    <string name="buyer_management">Buyer Management</string>
+    <string name="add_buyer">Add Buyer</string>
+    <string name="delete_buyer">Delete Buyer</string>
+    <string name="business_name">Business Name</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="email">Email Address</string>
+    <string name="gstin">GSTIN</string>
+    <string name="pan">PAN Number</string>
+    <string name="no_buyers">No Buyers Yet</string>
+    <string name="add_first_buyer">Add your first buyer by clicking the + button</string>
+
+    <!-- Reports & Analytics -->
+    <string name="reports_analytics">Reports &amp; Analytics</string>
+    <string name="export_data">Export Data</string>
+    <string name="share_report">Share Report</string>
+    <string name="monthly_revenue">Monthly Revenue</string>
+    <string name="expense_distribution">Expense Distribution</string>
+    <string name="crop_yields">Crop Yields</string>
+    <string name="error_load_revenue">Failed to load revenue data</string>
+    <string name="error_load_expense">Failed to load expense data</string>
+    <string name="error_load_crop">Failed to load crop yield data</string>
+    <string name="error_export">Export failed: %1$s</string>
+    <string name="error_fetch_data">Failed to fetch %1$s data</string>
 </resources>
