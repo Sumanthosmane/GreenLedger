@@ -307,20 +307,20 @@ GreenLedger v2.0 represents a major evolution from a simple expense tracking app
    - Revenue per crop
    - Profitability analysis
 
-5. **Cash Flow Statement**
+5. **Cash Flow Statement** ✅
    - Daily cash position
    - Inflow/outflow analysis
    - Bank balance tracking
    - Petty cash reconciliation
    - Payment forecasting
 
-6. **Storage Report**
+6. **Storage Report** ✅
    - Occupancy levels
    - Spoilage rates
    - Inventory value
    - Movement patterns
 
-7. **Sales Dashboard**
+7. **Sales Dashboard** ✅
    - Total revenue
    - Sales by crop
    - Sales by buyer
@@ -595,10 +595,10 @@ GreenLedger v2.0 transforms from a simple tracking tool into a comprehensive far
 ---
 
 **Document Control**
-- **Version**: 2.0
-- **Date**: October 31, 2025
+- **Version**: 2.1
+- **Date**: November 9, 2025
 - **Status**: Approved for Implementation
-- **Next Review**: November 15, 2025
+- **Next Review**: November 23, 2025
 
 ---
 
