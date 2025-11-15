@@ -211,6 +211,113 @@ Role-based access control and advanced features have been successfully implement
 - Image upload and management
 - Basic analytics dashboard
 - Export functionality (PDF/Excel)
+- Half-Day Work Support (Nov 15, 2025) ✅
+  - Shift type selection (Full Day, Half Day, Hourly)
+  - Auto-calculation of hours based on shift type
+  - Display of shift type in labour list
+  - Persistent storage in Firebase
+
+### Enhanced Labour Management - Half-Day Work Implementation
+
+#### Overview
+The half-day work feature allows farmers to record labour work in three shift types: Full Day (8 hours), Half Day (4 hours), and Hourly (custom hours). This enhancement provides greater flexibility in labour scheduling and accurate wage calculation.
+
+#### Implementation Details
+
+**1. Model Updates**
+- File: `com.greenledger.app.models.Labour.java`
+- Added field: `private String shiftType;`
+- Added constructor: `Labour(String labourId, String userId, String name, String phone, double hoursWorked, double hourlyRate, String workDate, String workDescription, ShiftType shiftType)`
+- Added methods:
+  - `getShiftType()` - Returns shift type as String
+  - `setShiftType(String shiftType)` - Set shift type from String
+  - `setShiftType(ShiftType shiftType)` - Set shift type from enum
+  - `getShiftTypeEnum()` - Returns ShiftType enum (with null/invalid handling)
+
+**2. Enum Support**
+- File: `com.greenledger.app.models.enums.ShiftType.java`
+- Already implemented with three values:
+  - `FULL_DAY("Full Day")` - 8 hours default
+  - `HALF_DAY("Half Day")` - 4 hours default
+  - `HOURLY("Hourly")` - Custom hours
+- Includes `getDisplayName()` method for UI display
+
+**3. UI Components**
+- File: `com.greenledger.app.res.layout.dialog_add_labour.xml`
+- Added: `MaterialAutoCompleteTextView` for shift type selection
+- Features:
+  - Dropdown list with three shift options
+  - Positioned between phone and hours fields
+  - Styling consistent with Material Design 3
+
+- File: `com.greenledger.app.res.layout.item_labour.xml`
+- Added: `TextView` to display shift type
+- Features:
+  - Shows "Shift: [Shift Type]" format
+  - Positioned below phone number
+  - Color and size matching other secondary info
+
+**4. Activity Implementation**
+- File: `com.greenledger.app.activities.LabourActivity.java`
+- Enhanced methods:
+  - `showAddLabourDialog()` - Added shift type spinner setup
+  - `setupShiftTypeSpinner()` - New method for shift type configuration
+  - `saveLabourEntry()` - Updated to pass ShiftType parameter
+- Auto-calculation logic:
+  - Full Day → 8 hours
+  - Half Day → 4 hours
+  - Hourly → Empty (user enters hours)
+- State management: `private ShiftType selectedShiftType = ShiftType.FULL_DAY;`
+
+**5. Adapter Updates**
+- File: `com.greenledger.app.adapters.LabourAdapter.java`
+- Enhanced ViewHolder:
+  - Added: `TextView shiftTypeText`
+  - Updated `bind()` method to display shift type
+  - Shows shift type using `labour.getShiftTypeEnum().getDisplayName()`
+
+**6. String Resources**
+- File: `com.greenledger.app.res.values.strings.xml`
+- Added strings:
+  - `<string name="shift_type">Shift Type</string>`
+  - `<string name="full_day">Full Day</string>`
+  - `<string name="half_day">Half Day</string>`
+  - `<string name="hourly">Hourly</string>`
+
+**7. Database Schema**
+- Firebase field: `workDetails.shiftType`
+- Type: String
+- Format: Enum name (FULL_DAY, HALF_DAY, HOURLY)
+- Default: FULL_DAY
+- Backward compatible: Existing entries without shiftType default to FULL_DAY
+
+**8. Payment Calculation**
+- Formula: `Total Pay = Hours Worked × Hourly Rate`
+- Shift type affects hours automatically:
+  - Full Day: 8 hours (or user override)
+  - Half Day: 4 hours (or user override)
+  - Hourly: User-specified hours
+- No changes to `getTotalPay()` method (already works correctly)
+
+#### Testing
+- Comprehensive test suite created: `HALF_DAY_WORK_TESTING.md`
+- 10 test cases covering all scenarios:
+  - T1: Add Full Day entry
+  - T2: Add Half Day entry
+  - T3: Add Hourly entry (custom hours)
+  - T4: Shift type change (Full Day → Half Day)
+  - T5: Shift type change (Half Day → Hourly)
+  - T6: Display shift type in list
+  - T7: Payment calculation verification
+  - T8: Validation - missing shift type
+  - T9: UI responsiveness
+  - T10: Data persistence
+
+#### Build Status
+- Gradle Build: ✅ SUCCESSFUL (Nov 15, 2025)
+- Compilation: ✅ Clean (minor deprecation warnings)
+- Build Time: 1m 3s
+- APK Assembly: ✅ Successful
 
 ### Security Implementation
 The following Firebase security rules have been implemented:
@@ -229,6 +336,12 @@ The following Firebase security rules have been implemented:
         ".read": "auth != null",
         ".write": "auth != null && (!data.exists() || data.child('farmerId').val() === auth.uid)"
       }
+    },
+    "labour": {
+      "$labourId": {
+        ".read": "auth != null",
+        ".write": "auth != null && (!data.exists() || data.child('farmerId').val() === auth.uid || data.child('labourerId').val() === auth.uid)"
+      }
     }
   }
 }
@@ -246,7 +359,7 @@ All analytics and reporting features have been successfully implemented.
 #### Report Generation System ✅
 - Profit & Loss reports
 - Crop Yield reports
-- Labour reports
+- Labour reports (including shift type data)
 - PDF export functionality
 - Excel export functionality
 
@@ -260,7 +373,7 @@ All analytics and reporting features have been successfully implemented.
 - Key Performance Indicators (KPIs)
 - Revenue trends
 - Expense distribution
-- Labour analysis
+- Labour analysis (with shift type breakdown)
 
 ### Implementation Details
 
@@ -280,10 +393,11 @@ All report models have been implemented in the package `com.greenledger.app.mode
    - Profitability analysis
 
 3. **LabourReport.java**
-   - Work entry tracking
+   - Work entry tracking (including shift types)
    - Hours and wages calculation
    - Worker performance metrics
    - Payment status tracking
+   - Shift type distribution analysis
 
 #### Report Generation (Implemented) ✅
 The `ReportGenerator` class in `com.greenledger.app.utils` provides:
@@ -330,7 +444,7 @@ The `AnalyticsDashboardActivity` provides:
 2. **Charts**
    - Expense distribution (Pie)
    - Revenue trends (Line)
-   - Labour analysis (Bar)
+   - Labour analysis (Bar) - including shift type breakdown
    - Interactive controls
 
 3. **Actions**
@@ -357,7 +471,7 @@ public class ChartHelper {
 
 **Create Dashboard**:
 - KPI cards (total revenue, expenses, profit)
-- Charts (expense breakdown, crop yield trends)
+- Charts (expense breakdown, crop yield trends, labour shift distribution)
 - Quick actions
 - Recent activity feed
 

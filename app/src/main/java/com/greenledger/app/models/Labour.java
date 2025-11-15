@@ -1,5 +1,7 @@
 package com.greenledger.app.models;
 
+import com.greenledger.app.models.enums.ShiftType;
+
 public class Labour {
     private String labourId;
     private String userId;
@@ -9,6 +11,7 @@ public class Labour {
     private double hourlyRate;
     private String workDate;
     private String workDescription;
+    private String shiftType; // Store as String for Firebase compatibility
     private long timestamp;
 
     public Labour() {
@@ -25,6 +28,21 @@ public class Labour {
         this.hourlyRate = hourlyRate;
         this.workDate = workDate;
         this.workDescription = workDescription;
+        this.shiftType = ShiftType.FULL_DAY.name();
+        this.timestamp = System.currentTimeMillis();
+    }
+
+    public Labour(String labourId, String userId, String name, String phone, double hoursWorked,
+                 double hourlyRate, String workDate, String workDescription, ShiftType shiftType) {
+        this.labourId = labourId;
+        this.userId = userId;
+        this.name = name;
+        this.phone = phone;
+        this.hoursWorked = hoursWorked;
+        this.hourlyRate = hourlyRate;
+        this.workDate = workDate;
+        this.workDescription = workDescription;
+        this.shiftType = shiftType.name();
         this.timestamp = System.currentTimeMillis();
     }
 
@@ -90,6 +108,29 @@ public class Labour {
 
     public void setWorkDescription(String workDescription) {
         this.workDescription = workDescription;
+    }
+
+    public String getShiftType() {
+        return shiftType;
+    }
+
+    public void setShiftType(String shiftType) {
+        this.shiftType = shiftType;
+    }
+
+    public void setShiftType(ShiftType shiftType) {
+        this.shiftType = shiftType.name();
+    }
+
+    public ShiftType getShiftTypeEnum() {
+        if (shiftType == null || shiftType.isEmpty()) {
+            return ShiftType.FULL_DAY;
+        }
+        try {
+            return ShiftType.valueOf(shiftType);
+        } catch (IllegalArgumentException e) {
+            return ShiftType.FULL_DAY;
+        }
     }
 
     public long getTimestamp() {

@@ -201,24 +201,41 @@ GreenLedger v2.0 represents a major evolution from a simple expense tracking app
 ---
 
 #### 7. Enhanced Labour Management
-**Priority**: HIGH | **Effort**: 3 weeks
+**Priority**: HIGH | **Effort**: 3 weeks | **Status**: ✅ Partially Complete
 
 **Features**:
 - Digital attendance (check-in/check-out)
 - GPS-based verification
 - Work scheduling calendar
-- Multiple shift types (Full Day, Half Day, Hourly)
+- Multiple shift types (Full Day, Half Day, Hourly) ✅ **COMPLETED (Nov 15, 2025)**
+  - Full Day: 8 hours default
+  - Half Day: 4 hours default
+  - Hourly: Custom hours input
+  - Auto-calculation based on shift type
+  - Shift type display in labour list
+  - Shift type persistence in Firebase
 - Overtime tracking
 - Performance ratings
 - Automated payroll calculation
 - Digital payslips
 - Payment history
 
+**Half-Day Work Implementation Details**:
+- **Model Updates**: Labour model enhanced with `shiftType` field
+- **UI Changes**: MaterialAutoCompleteTextView added for shift type selection
+- **Auto-Calculation**: Hours automatically populated based on selected shift (8 for Full Day, 4 for Half Day, manual for Hourly)
+- **Display**: Shift type shown in labour list cards below phone number
+- **Database**: Shift type stored as String enum in Firebase for compatibility
+- **Payment Calculation**: Total Pay = Hours × Rate (shift type affects hours automatically)
+- **Testing**: Comprehensive test suite created (10 test cases covering all scenarios)
+- **Build Status**: ✅ Successful (tested on Nov 15, 2025)
+
 **Impact**:
 - Accurate time tracking
 - Fair payment calculation
 - Improved worker satisfaction
 - Reduced disputes
+- Greater flexibility in labour scheduling
 
 ---
 

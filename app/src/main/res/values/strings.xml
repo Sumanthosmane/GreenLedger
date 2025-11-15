@@ -65,6 +65,10 @@
     <!-- Labour -->
     <string name="labour_title">Labour Management</string>
     <string name="add_labour">Add Labour</string>
+    <string name="shift_type">Shift Type</string>
+    <string name="full_day">Full Day</string>
+    <string name="half_day">Half Day</string>
+    <string name="hourly">Hourly</string>
 
     <!-- Login -->
     <string name="login_title">Login to GreenLedger</string>

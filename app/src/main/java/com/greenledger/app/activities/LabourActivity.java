@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.greenledger.app.R;
 import com.greenledger.app.adapters.LabourAdapter;
 import com.greenledger.app.models.Labour;
+import com.greenledger.app.models.enums.ShiftType;
 import com.greenledger.app.utils.FirebaseHelper;
 
 import java.text.SimpleDateFormat;
@@ -39,6 +43,7 @@ public class LabourActivity extends AppCompatActivity {
     private FirebaseHelper firebaseHelper;
     private Calendar calendar = Calendar.getInstance();
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private ShiftType selectedShiftType = ShiftType.FULL_DAY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +111,7 @@ public class LabourActivity extends AppCompatActivity {
 
         TextInputEditText nameEditText = dialogView.findViewById(R.id.nameEditText);
         TextInputEditText phoneEditText = dialogView.findViewById(R.id.phoneEditText);
+        MaterialAutoCompleteTextView shiftTypeEditText = dialogView.findViewById(R.id.shiftTypeEditText);
         TextInputEditText hoursEditText = dialogView.findViewById(R.id.hoursEditText);
         TextInputEditText rateEditText = dialogView.findViewById(R.id.rateEditText);
         TextInputEditText dateEditText = dialogView.findViewById(R.id.dateEditText);
@@ -113,6 +119,9 @@ public class LabourActivity extends AppCompatActivity {
 
         // Set current date
         dateEditText.setText(dateFormatter.format(calendar.getTime()));
+
+        // Setup shift type spinner
+        setupShiftTypeSpinner(shiftTypeEditText, hoursEditText);
 
         // Date picker
         dateEditText.setOnClickListener(v -> {
@@ -147,7 +156,7 @@ public class LabourActivity extends AppCompatActivity {
             if (validateLabourInput(name, phone, hoursStr, rateStr, description)) {
                 double hours = Double.parseDouble(hoursStr);
                 double rate = Double.parseDouble(rateStr);
-                saveLabourEntry(name, phone, hours, rate, date, description);
+                saveLabourEntry(name, phone, hours, rate, date, description, selectedShiftType);
                 dialog.dismiss();
             }
         });
@@ -155,6 +164,38 @@ public class LabourActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
+    }
+
+    private void setupShiftTypeSpinner(MaterialAutoCompleteTextView shiftTypeEditText,
+                                       TextInputEditText hoursEditText) {
+        List<String> shiftTypes = new ArrayList<>();
+        shiftTypes.add(getString(R.string.full_day));
+        shiftTypes.add(getString(R.string.half_day));
+        shiftTypes.add(getString(R.string.hourly));
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, shiftTypes);
+        shiftTypeEditText.setAdapter(adapter);
+
+        // Set default
+        shiftTypeEditText.setText(getString(R.string.full_day), false);
+        selectedShiftType = ShiftType.FULL_DAY;
+        hoursEditText.setText("8");
+
+        // Handle selection changes
+        shiftTypeEditText.setOnItemClickListener((adapterView, view, position, l) -> {
+            String selected = (String) adapterView.getItemAtPosition(position);
+            if (selected.equals(getString(R.string.full_day))) {
+                selectedShiftType = ShiftType.FULL_DAY;
+                hoursEditText.setText("8");
+            } else if (selected.equals(getString(R.string.half_day))) {
+                selectedShiftType = ShiftType.HALF_DAY;
+                hoursEditText.setText("4");
+            } else {
+                selectedShiftType = ShiftType.HOURLY;
+                hoursEditText.setText("");
+            }
+        });
     }
 
     private boolean validateLabourInput(String name, String phone, String hours,
@@ -188,14 +229,14 @@ public class LabourActivity extends AppCompatActivity {
     }
 
     private void saveLabourEntry(String name, String phone, double hours, double rate,
-                                 String date, String description) {
+                                 String date, String description, ShiftType shiftType) {
         String userId = firebaseHelper.getCurrentUserId();
         if (userId == null) return;
 
         String labourId = firebaseHelper.getLabourRef().push().getKey();
         if (labourId == null) return;
 
-        Labour labour = new Labour(labourId, userId, name, phone, hours, rate, date, description);
+        Labour labour = new Labour(labourId, userId, name, phone, hours, rate, date, description, shiftType);
 
         firebaseHelper.getLabourRef().child(labourId).setValue(labour)
                 .addOnCompleteListener(task -> {

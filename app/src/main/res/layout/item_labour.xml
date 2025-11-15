@@ -47,6 +47,15 @@
             android:layout_marginTop="4dp" />
 
         <TextView
+            android:id="@+id/shiftTypeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Shift: Full Day"
+            android:textSize="13sp"
+            android:textColor="@color/text_secondary"
+            android:layout_marginTop="2dp" />
+
+        <TextView
             android:id="@+id/workDetailsText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
