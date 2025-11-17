@@ -59,6 +59,13 @@
                 android:padding="16dp"
                 android:visibility="gone"/>
 
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/cropRevenueChart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                android:visibility="gone"/>
+
         </FrameLayout>
 
     </androidx.core.widget.NestedScrollView>

@@ -118,9 +118,6 @@ public class Labour {
         this.shiftType = shiftType;
     }
 
-    public void setShiftType(ShiftType shiftType) {
-        this.shiftType = shiftType.name();
-    }
 
     public ShiftType getShiftTypeEnum() {
         if (shiftType == null || shiftType.isEmpty()) {

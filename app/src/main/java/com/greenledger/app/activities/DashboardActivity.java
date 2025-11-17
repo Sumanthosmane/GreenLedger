@@ -72,55 +72,74 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void loadUserData() {
         String userId = firebaseHelper.getCurrentUserId();
-        if (userId != null) {
-            // Try loading from usersV2 first (new users)
-            firebaseHelper.getUsersV2Ref().child(userId).addListenerForSingleValueEvent(
-                    new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.exists()) {
-                                UserV2 userV2 = snapshot.getValue(UserV2.class);
-                                if (userV2 != null) {
-                                    userNameText.setText(getString(R.string.welcome, userV2.getName()));
-                                }
-                            } else {
-                                // Fallback to old users collection for backward compatibility
-                                loadUserDataFromV1();
+        if (userId == null) {
+            userNameText.setText(getString(R.string.welcome, "User"));
+            return;
+        }
+
+        // Set a timeout for data loading (5 seconds)
+        new android.os.Handler(android.os.Looper.getMainLooper())
+                .postDelayed(() -> {
+                    if (userNameText.getText().toString().equals(getString(R.string.welcome, "User"))) {
+                        // Still loading after 5 seconds - proceed anyway
+                        android.util.Log.w("DashboardActivity", "User data loading timeout");
+                    }
+                }, 5000);
+
+        // Try loading from usersV2 first (new users)
+        firebaseHelper.getUsersV2Ref().child(userId).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            UserV2 userV2 = snapshot.getValue(UserV2.class);
+                            if (userV2 != null && userV2.getName() != null) {
+                                userNameText.setText(getString(R.string.welcome, userV2.getName()));
+                                return;
                             }
                         }
+                        // Fallback to old users collection for backward compatibility
+                        loadUserDataFromV1();
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            // Fallback to v1 on error
-                            loadUserDataFromV1();
-                        }
-                    });
-        }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        android.util.Log.e("DashboardActivity", "Error loading userV2", error.toException());
+                        // Fallback to v1 on error
+                        loadUserDataFromV1();
+                    }
+                });
     }
 
     private void loadUserDataFromV1() {
         String userId = firebaseHelper.getCurrentUserId();
-        if (userId != null) {
-            firebaseHelper.getUsersRef().child(userId).addListenerForSingleValueEvent(
-                    new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+        if (userId == null) {
+            userNameText.setText(getString(R.string.welcome, "User"));
+            return;
+        }
+
+        firebaseHelper.getUsersRef().child(userId).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
                             User user = snapshot.getValue(User.class);
-                            if (user != null) {
+                            if (user != null && user.getName() != null) {
                                 userNameText.setText(getString(R.string.welcome, user.getName()));
-                            } else {
-                                userNameText.setText(getString(R.string.welcome, "User"));
+                                return;
                             }
                         }
+                        // Default name if no data found
+                        userNameText.setText(getString(R.string.welcome, "User"));
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(DashboardActivity.this,
-                                    "Failed to load user data", Toast.LENGTH_SHORT).show();
-                            userNameText.setText(getString(R.string.welcome, "User"));
-                        }
-                    });
-        }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        android.util.Log.e("DashboardActivity", "Error loading userV1", error.toException());
+                        // Use default name if loading fails
+                        userNameText.setText(getString(R.string.welcome, "User"));
+                    }
+                });
     }
 
     private void setupCardListeners() {

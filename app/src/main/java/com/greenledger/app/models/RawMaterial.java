@@ -4,22 +4,26 @@ public class RawMaterial {
     private String materialId;
     private String userId;
     private String name;
+    private String crop;
     private double quantity;
     private String unit;
     private double costPerUnit;
+    private String date;
     private long timestamp;
 
     public RawMaterial() {
         // Required empty constructor for Firebase
     }
 
-    public RawMaterial(String materialId, String userId, String name, double quantity, String unit, double costPerUnit) {
+    public RawMaterial(String materialId, String userId, String name, String crop, double quantity, String unit, double costPerUnit, String date) {
         this.materialId = materialId;
         this.userId = userId;
         this.name = name;
+        this.crop = crop;
         this.quantity = quantity;
         this.unit = unit;
         this.costPerUnit = costPerUnit;
+        this.date = date;
         this.timestamp = System.currentTimeMillis();
     }
 
@@ -45,6 +49,14 @@ public class RawMaterial {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCrop() {
+        return crop;
+    }
+
+    public void setCrop(String crop) {
+        this.crop = crop;
     }
 
     public double getQuantity() {
@@ -77,6 +89,14 @@ public class RawMaterial {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public double getTotalCost() {

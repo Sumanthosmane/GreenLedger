@@ -222,7 +222,68 @@ For each test case, document:
 
 ---
 
-## 13. Usability Testing
+## 13. Delete Data Functionality
+
+### 13.1 Expense Deletion Testing
+| Test Case | Steps | Expected Result | Status |
+|-----------|-------|-----------------|--------|
+| Delete Button Visible | Open Expense list | Delete icon visible on each item | □ |
+| Open Confirmation | Click delete button | Confirmation dialog appears | □ |
+| Dialog Content | Check dialog | Title, message, Cancel/Delete buttons shown | □ |
+| Cancel Delete | Click Cancel button | Dialog closes, expense remains | □ |
+| Confirm Delete | Click Delete button | Expense removed, list updates, toast shown | □ |
+| Multiple Deletes | Delete multiple expenses | Each deletion works independently | □ |
+| Delete Verification | Check Firebase | Expense node removed from database | □ |
+| Empty List | Delete all expenses | Empty state displayed | □ |
+
+### 13.2 Raw Materials Deletion Testing
+| Test Case | Steps | Expected Result | Status |
+|-----------|-------|-----------------|--------|
+| Delete Button Visible | Open Raw Materials | Delete icon visible on each item | □ |
+| Open Confirmation | Click delete button | Confirmation dialog appears | □ |
+| Dialog Content | Check dialog | Title, message, Cancel/Delete buttons shown | □ |
+| Cancel Delete | Click Cancel button | Dialog closes, material remains | □ |
+| Confirm Delete | Click Delete button | Material removed, list updates, toast shown | □ |
+| Multiple Deletes | Delete multiple materials | Each deletion works independently | □ |
+| Delete Verification | Check Firebase | Material node removed from database | □ |
+| Empty List | Delete all materials | Empty state displayed | □ |
+
+### 13.3 Labour Deletion Testing
+| Test Case | Steps | Expected Result | Status |
+|-----------|-------|-----------------|--------|
+| Delete Button Visible | Open Labour list | Delete icon visible on each item | □ |
+| Open Confirmation | Click delete button | Confirmation dialog appears | □ |
+| Dialog Content | Check dialog | Title, message, Cancel/Delete buttons shown | □ |
+| Cancel Delete | Click Cancel button | Dialog closes, labour entry remains | □ |
+| Confirm Delete | Click Delete button | Labour entry removed, list updates, toast shown | □ |
+| Multiple Deletes | Delete multiple entries | Each deletion works independently | □ |
+| Delete Verification | Check Firebase | Labour node removed from database | □ |
+| Empty List | Delete all labour entries | Empty state displayed | □ |
+
+### 13.4 Sales Deletion Testing
+| Test Case | Steps | Expected Result | Status |
+|-----------|-------|-----------------|--------|
+| Delete Button Visible | Open Sales list | Delete icon visible on each item | □ |
+| Open Confirmation | Click delete button | Confirmation dialog appears | □ |
+| Dialog Content | Check dialog | Title, message, Cancel/Delete buttons shown | □ |
+| Cancel Delete | Click Cancel button | Dialog closes, sale remains | □ |
+| Confirm Delete | Click Delete button | Sale removed, list updates, toast shown | □ |
+| Multiple Deletes | Delete multiple sales | Each deletion works independently | □ |
+| Delete Verification | Check Firebase | Sales node removed from database | □ |
+| Empty List | Delete all sales | Empty state displayed | □ |
+
+### 13.5 Delete Edge Cases
+| Test Case | Steps | Expected Result | Status |
+|-----------|-------|-----------------|--------|
+| Network Failure | Delete with no network | Error message shown, item remains | □ |
+| Rapid Deletes | Click delete multiple times | Only one deletion process | □ |
+| Back During Delete | Press back during deletion | Operation completes | □ |
+| Delete & Add | Delete then add same item | New item added with new ID | □ |
+| Firebase Rules | Try unauthorized delete | Proper permission error | □ |
+
+---
+
+## 14. Error Handling
 | Test Case | Steps | Expected Result | Status |
 |-----------|-------|-----------------|--------|
 | Navigation | Test app navigation | Intuitive flow | □ |
@@ -245,8 +306,9 @@ For each test case, document:
 ---
 
 ## Document Control
-- **Version**: 1.0
+- **Version**: 1.1
 - **Created**: November 9, 2025
-- **Last Updated**: November 9, 2025
-- **Status**: Ready for Testing
+- **Last Updated**: November 16, 2025
+- **Status**: Delete Functionality Testing Added
+- **Last Enhancement**: Delete Data Feature Testing Procedures
 - **Next Review**: November 23, 2025

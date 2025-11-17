@@ -18,6 +18,8 @@ android {
     }
 
     buildTypes {
+        debug {
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -33,10 +35,12 @@ android {
         baseline = file("lint-baseline.xml")
         abortOnError = false
         checkReleaseBuilds = false
+        checkTestSources = false
         disable 'UseAppTint'
         disable 'ObsoleteLintCustomCheck'
     }
 }
+
 
 
 dependencies {

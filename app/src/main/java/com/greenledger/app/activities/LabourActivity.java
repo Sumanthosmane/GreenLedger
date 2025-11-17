@@ -76,6 +76,7 @@ public class LabourActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         adapter = new LabourAdapter();
+        adapter.setDeleteListener(this::deleteLabourEntry);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
@@ -248,5 +249,26 @@ public class LabourActivity extends AppCompatActivity {
                                 "Failed to add labour entry", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void deleteLabourEntry(String labourId) {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete Labour Entry")
+                .setMessage("Are you sure you want to delete this labour entry? This action cannot be undone.")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    firebaseHelper.getLabourRef().child(labourId).removeValue()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(LabourActivity.this,
+                                            "Labour entry deleted successfully", Toast.LENGTH_SHORT).show();
+                                    loadLabourEntries();
+                                } else {
+                                    Toast.makeText(LabourActivity.this,
+                                            "Failed to delete labour entry", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                })
+                .show();
     }
 }

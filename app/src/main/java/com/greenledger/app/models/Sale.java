@@ -5,9 +5,11 @@ import java.util.Date;
 
 public class Sale {
     private String id;
+    private String userId;
     private String farmId;
     private String cropId;
     private String buyerId;
+    private String buyerName;
     private double quantity;
     private String unit;
     private double pricePerUnit;
@@ -26,6 +28,10 @@ public class Sale {
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
+
+    // ...existing code...
     public String getFarmId() { return farmId; }
     public void setFarmId(String farmId) { this.farmId = farmId; }
 
@@ -34,6 +40,9 @@ public class Sale {
 
     public String getBuyerId() { return buyerId; }
     public void setBuyerId(String buyerId) { this.buyerId = buyerId; }
+
+    public String getBuyerName() { return buyerName; }
+    public void setBuyerName(String buyerName) { this.buyerName = buyerName; }
 
     public double getQuantity() { return quantity; }
     public void setQuantity(double quantity) { this.quantity = quantity; }

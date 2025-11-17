@@ -4,6 +4,7 @@ public class Expense {
     private String expenseId;
     private String userId;
     private String category;
+    private String crop;
     private double amount;
     private String description;
     private String date;
@@ -13,10 +14,11 @@ public class Expense {
         // Required empty constructor for Firebase
     }
 
-    public Expense(String expenseId, String userId, String category, double amount, String description, String date) {
+    public Expense(String expenseId, String userId, String category, String crop, double amount, String description, String date) {
         this.expenseId = expenseId;
         this.userId = userId;
         this.category = category;
+        this.crop = crop;
         this.amount = amount;
         this.description = description;
         this.date = date;
@@ -45,6 +47,14 @@ public class Expense {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getCrop() {
+        return crop;
+    }
+
+    public void setCrop(String crop) {
+        this.crop = crop;
     }
 
     public double getAmount() {

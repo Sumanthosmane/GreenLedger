@@ -3,6 +3,7 @@ package com.greenledger.app.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,18 @@ import java.util.List;
 
 public class LabourAdapter extends RecyclerView.Adapter<LabourAdapter.LabourViewHolder> {
     private List<Labour> labourList = new ArrayList<>();
+    private OnDeleteClickListener deleteListener;
+
+    public interface OnDeleteClickListener {
+        void onDeleteClick(String labourId);
+    }
+
+    public LabourAdapter() {
+    }
+
+    public void setDeleteListener(OnDeleteClickListener listener) {
+        this.deleteListener = listener;
+    }
 
     @NonNull
     @Override
@@ -28,7 +41,7 @@ public class LabourAdapter extends RecyclerView.Adapter<LabourAdapter.LabourView
     @Override
     public void onBindViewHolder(@NonNull LabourViewHolder holder, int position) {
         Labour labour = labourList.get(position);
-        holder.bind(labour);
+        holder.bind(labour, deleteListener);
     }
 
     @Override
@@ -49,6 +62,7 @@ public class LabourAdapter extends RecyclerView.Adapter<LabourAdapter.LabourView
         private final TextView descriptionText;
         private final TextView dateText;
         private final TextView totalPayText;
+        private final ImageButton deleteButton;
 
         public LabourViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -59,9 +73,10 @@ public class LabourAdapter extends RecyclerView.Adapter<LabourAdapter.LabourView
             descriptionText = itemView.findViewById(R.id.descriptionText);
             dateText = itemView.findViewById(R.id.dateText);
             totalPayText = itemView.findViewById(R.id.totalPayText);
+            deleteButton = itemView.findViewById(R.id.deleteButton);
         }
 
-        public void bind(Labour labour) {
+        public void bind(Labour labour, OnDeleteClickListener deleteListener) {
             nameText.setText(labour.getName());
             phoneText.setText("Phone: " + labour.getPhone());
             shiftTypeText.setText("Shift: " + labour.getShiftTypeEnum().getDisplayName());
@@ -70,6 +85,12 @@ public class LabourAdapter extends RecyclerView.Adapter<LabourAdapter.LabourView
             descriptionText.setText(labour.getWorkDescription());
             dateText.setText(labour.getWorkDate());
             totalPayText.setText(String.format("₹%.2f", labour.getTotalPay()));
+
+            deleteButton.setOnClickListener(v -> {
+                if (deleteListener != null) {
+                    deleteListener.onDeleteClick(labour.getLabourId());
+                }
+            });
         }
     }
 }

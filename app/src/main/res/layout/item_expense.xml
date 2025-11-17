@@ -15,7 +15,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/categoryText"
@@ -34,8 +35,29 @@
                 android:text="₹0.00"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@color/primary" />
+                android:textColor="@color/primary"
+                android:layout_marginEnd="8dp" />
+
+            <ImageButton
+                android:id="@+id/deleteButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="Delete expense"
+                android:src="@drawable/ic_delete"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="centerInside"
+                android:padding="8dp" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/cropText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Crop: N/A"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            android:textColor="@color/text_secondary"
+            android:layout_marginTop="4dp" />
 
         <TextView
             android:id="@+id/descriptionText"

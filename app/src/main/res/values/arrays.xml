@@ -57,4 +57,21 @@
         <item>Cold Storage</item>
         <item>Open Storage</item>
     </string-array>
+
+    <!-- Crop Types -->
+    <string-array name="crop_types">
+        <item>Rice</item>
+        <item>Sugarcane</item>
+        <item>Groundnut</item>
+        <item>Cotton</item>
+        <item>Sunflower</item>
+        <item>Arecanut</item>
+        <item>Coconut</item>
+        <item>Coffee</item>
+        <item>Pepper</item>
+        <item>Rubber</item>
+        <item>Banana</item>
+        <item>Chilli</item>
+        <item>Wheat</item>
+    </string-array>
 </resources>

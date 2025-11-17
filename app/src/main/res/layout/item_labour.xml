@@ -15,7 +15,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/nameText"
@@ -34,7 +35,18 @@
                 android:text="₹0.00"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@color/info" />
+                android:textColor="@color/info"
+                android:layout_marginEnd="8dp" />
+
+            <ImageButton
+                android:id="@+id/deleteButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="Delete labour entry"
+                android:src="@drawable/ic_delete"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="centerInside"
+                android:padding="8dp" />
         </LinearLayout>
 
         <TextView

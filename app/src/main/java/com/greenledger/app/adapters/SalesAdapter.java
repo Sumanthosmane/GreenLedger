@@ -3,6 +3,7 @@ package com.greenledger.app.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,15 +16,24 @@ import java.util.Locale;
 public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SaleViewHolder> {
     private final List<Sale> sales;
     private final OnSaleClickListener listener;
+    private OnDeleteClickListener deleteListener;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
 
     public interface OnSaleClickListener {
         void onSaleClick(Sale sale);
     }
 
+    public interface OnDeleteClickListener {
+        void onDeleteClick(String saleId);
+    }
+
     public SalesAdapter(List<Sale> sales, OnSaleClickListener listener) {
         this.sales = sales;
         this.listener = listener;
+    }
+
+    public void setDeleteListener(OnDeleteClickListener listener) {
+        this.deleteListener = listener;
     }
 
     @NonNull
@@ -37,7 +47,7 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SaleViewHold
     @Override
     public void onBindViewHolder(@NonNull SaleViewHolder holder, int position) {
         Sale sale = sales.get(position);
-        holder.bind(sale);
+        holder.bind(sale, deleteListener);
     }
 
     @Override
@@ -51,6 +61,7 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SaleViewHold
         private final TextView cropText;
         private final TextView amountText;
         private final TextView statusText;
+        private final ImageButton deleteButton;
 
         public SaleViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -59,6 +70,7 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SaleViewHold
             cropText = itemView.findViewById(R.id.cropText);
             amountText = itemView.findViewById(R.id.amountText);
             statusText = itemView.findViewById(R.id.statusText);
+            deleteButton = itemView.findViewById(R.id.deleteButton);
 
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
@@ -68,12 +80,18 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SaleViewHold
             });
         }
 
-        public void bind(Sale sale) {
+        public void bind(Sale sale, OnDeleteClickListener deleteListener) {
             dateText.setText(dateFormat.format(sale.getSaleDate()));
             buyerText.setText(sale.getBuyerId()); // TODO: Load buyer name
             cropText.setText(sale.getCropId()); // TODO: Load crop name
             amountText.setText(String.format(Locale.getDefault(), "₹%.2f", sale.getTotalAmount()));
             statusText.setText(sale.isInvoiceGenerated() ? "Invoiced" : "Pending");
+
+            deleteButton.setOnClickListener(v -> {
+                if (deleteListener != null) {
+                    deleteListener.onDeleteClick(sale.getId());
+                }
+            });
         }
     }
 }

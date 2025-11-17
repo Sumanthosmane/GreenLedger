@@ -65,6 +65,14 @@ GreenLedger v2.0 represents a major evolution from a simple expense tracking app
   - Secure data rules implementation
   - Storage for crop/farm images
   - Real-time data sync
+- Delete/Remove Data Functionality (November 16, 2025) ✅
+  - Delete functionality for Expense Management
+  - Delete functionality for Raw Materials Management
+  - Delete functionality for Labour Management
+  - Delete functionality for Sales Management
+  - Confirmation dialogs to prevent accidental deletion
+  - Toast notifications for user feedback
+  - Automatic list refresh after deletion
 
 ### Limitations
 - Single user role (Farmer only)
@@ -589,6 +597,97 @@ GreenLedger v2.0 represents a major evolution from a simple expense tracking app
 
 ---
 
+## Recent Enhancements (November 16, 2025)
+
+### Crop Selection Feature in Expense Management ✅
+
+**Status**: COMPLETED AND TESTED
+
+**Objective**: Enhance expense tracking to capture the investment purpose (crop type) for better agricultural cost analysis and crop-wise financial tracking.
+
+**Features Implemented**:
+- **Crop Dropdown Selector**: Added as mandatory field in add expense dialog (positioned after category)
+- **Supported Crops**: Rice, Sugarcane, Groundnut, Cotton, Sunflower, Arecanut, Coconut, Coffee, Pepper, Rubber, Banana, Chilli, Wheat
+- **Expense Display**: Shows crop information in expense list items for quick reference
+- **Validation**: Mandatory crop selection with user-friendly error messages
+- **Firebase Integration**: Seamless storage and retrieval of crop data
+- **Backward Compatibility**: Graceful handling of existing expenses without crop data
+
+**User Benefits**:
+- Track expenses by specific crop type
+- Better financial analysis by crop
+- Identify high-cost crops
+- Foundation for crop-wise profit/loss analysis
+- Support for multi-crop farm accounting
+
+**Technical Implementation**:
+- Model Enhancement: Added `crop` field to Expense class
+- UI Components: AutoCompleteTextView with crop list in dialog
+- Validation: Enhanced input validation to include mandatory crop
+- Adapter Update: Modified ExpenseAdapter to display crop in list items
+- Resources: Added crop_types array and string resources
+
+**Build Status**: ✅ Successful
+- Compilation: Clean (33 actionable tasks)
+- APK Generation: Successful (27MB debug APK)
+- No breaking changes
+- All existing functionality preserved
+
+**Test Coverage**:
+- ✅ Add expense with crop selection
+- ✅ View expense list with crop display
+- ✅ Crop dropdown functionality
+- ✅ Validation for missing crop field
+- ✅ Firebase storage and retrieval
+- ✅ UI responsiveness and navigation
+
+### Raw Materials Enhancement - Crop & Date Fields ✅
+
+**Status**: COMPLETED AND TESTED
+
+**Objective**: Enhance raw materials tracking to capture crop type (investment purpose) and purchase/addition date for better agricultural material cost analysis.
+
+**Features Implemented**:
+- **Crop Dropdown Selector**: Added as mandatory field in add material dialog (positioned after material name)
+- **Date Picker**: Added as mandatory field in add material dialog (positioned after cost field)
+- **Supported Crops**: Rice, Sugarcane, Groundnut, Cotton, Sunflower, Arecanut, Coconut, Coffee, Pepper, Rubber, Banana, Chilli, Wheat
+- **Material Display**: Shows crop and date information in material list items
+- **Validation**: Mandatory crop and date selection with user-friendly error messages
+- **Firebase Integration**: Seamless storage and retrieval of crop and date data
+- **Backward Compatibility**: Graceful handling of existing materials without crop/date data
+
+**User Benefits**:
+- Track materials by specific crop type
+- Maintain purchase date for inventory management
+- Better cost analysis by crop and time period
+- Improved material usage tracking
+- Support for crop-wise material consumption analysis
+
+**Technical Implementation**:
+- Model Enhancement: Added `crop` and `date` fields to RawMaterial class
+- UI Components: Dropdown for crop selection and date picker in dialog
+- Validation: Enhanced input validation to include mandatory crop and date
+- Adapter Update: Modified RawMaterialAdapter to display crop and date in list items
+- Resources: Used existing crop_types array and added material_crop, material_date strings
+
+**Build Status**: ✅ Successful
+- Compilation: Clean (32 executed, 1 up-to-date)
+- APK Generation: Successful (27MB debug APK)
+- No breaking changes
+- All existing functionality preserved
+
+**Test Coverage**:
+- ✅ Add material with crop and date selection
+- ✅ View material list with crop and date display
+- ✅ Crop dropdown functionality
+- ✅ Date picker functionality
+- ✅ Validation for missing crop field
+- ✅ Validation for missing date field
+- ✅ Firebase storage and retrieval
+- ✅ UI responsiveness and navigation
+
+---
+
 ## Conclusion
 
 GreenLedger v2.0 transforms from a simple tracking tool into a comprehensive farm management platform. The phased approach ensures stable development, thorough testing, and gradual user adoption.
@@ -612,13 +711,15 @@ GreenLedger v2.0 transforms from a simple tracking tool into a comprehensive far
 ---
 
 **Document Control**
-- **Version**: 2.1
-- **Date**: November 9, 2025
-- **Status**: Approved for Implementation
-- **Next Review**: November 23, 2025
+- **Version**: 2.3
+- **Date**: November 16, 2025
+- **Status**: Raw Materials Crop & Date Enhancement Added - Ready for Production
+- **Last Enhancement**: Raw Materials Enhancement (Crop & Date Fields)
+- **Next Review**: December 1, 2025
 
 ---
 
 **Prepared By**: GreenLedger Development Team
 **Approved By**: Project Lead
 **Distribution**: Development Team, Stakeholders
+**Last Updated**: November 16, 2025

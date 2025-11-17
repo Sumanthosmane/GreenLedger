@@ -3,7 +3,9 @@ package com.greenledger.app.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -68,6 +70,7 @@ public class SalesListActivity extends AppCompatActivity {
             intent.putExtra("saleId", sale.getId());
             startActivity(intent);
         });
+        salesAdapter.setDeleteListener(this::deleteSale);
 
         salesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         salesRecyclerView.setAdapter(salesAdapter);
@@ -84,18 +87,26 @@ public class SalesListActivity extends AppCompatActivity {
     private void loadSales() {
         swipeRefresh.setRefreshing(true);
 
-        firebaseHelper.getSalesRef().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                salesList.clear();
-                for (DataSnapshot saleSnapshot : snapshot.getChildren()) {
-                    Sale sale = saleSnapshot.getValue(Sale.class);
-                    if (sale != null) {
-                        salesList.add(sale);
-                    }
-                }
-                salesAdapter.notifyDataSetChanged();
-                swipeRefresh.setRefreshing(false);
+        String userId = firebaseHelper.getCurrentUserId();
+        if (userId == null) {
+            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
+            swipeRefresh.setRefreshing(false);
+            return;
+        }
+
+        firebaseHelper.getSalesRef().orderByChild("userId").equalTo(userId)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        salesList.clear();
+                        for (DataSnapshot saleSnapshot : snapshot.getChildren()) {
+                            Sale sale = saleSnapshot.getValue(Sale.class);
+                            if (sale != null) {
+                                salesList.add(sale);
+                            }
+                        }
+                        salesAdapter.notifyDataSetChanged();
+                        swipeRefresh.setRefreshing(false);
             }
 
             @Override
@@ -110,5 +121,26 @@ public class SalesListActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private void deleteSale(String saleId) {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete Sale")
+                .setMessage("Are you sure you want to delete this sale? This action cannot be undone.")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    firebaseHelper.getSalesRef().child(saleId).removeValue()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(SalesListActivity.this,
+                                            "Sale deleted successfully", Toast.LENGTH_SHORT).show();
+                                    loadSales();
+                                } else {
+                                    Toast.makeText(SalesListActivity.this,
+                                            "Failed to delete sale", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                })
+                .show();
     }
 }

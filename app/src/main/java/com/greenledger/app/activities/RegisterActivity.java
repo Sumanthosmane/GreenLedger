@@ -106,20 +106,28 @@ public class RegisterActivity extends AppCompatActivity {
         UserRole role = convertToUserRole(userType);
         UserV2 userV2 = new UserV2(userId, name, phone, role);
 
-        // Save to v1 collection
-        firebaseHelper.getUsersRef().child(userId).setValue(user);
+        // Save to v1 collection (non-blocking)
+        firebaseHelper.getUsersRef().child(userId).setValue(user)
+                .addOnFailureListener(e -> {
+                    android.util.Log.e("RegisterActivity", "Failed to save v1 user", e);
+                    // Continue anyway - v2 is the primary
+                });
 
-        // Save to v2 collection
+        // Save to v2 collection (primary)
         firebaseHelper.getUsersV2Ref().child(userId).setValue(userV2)
                 .addOnCompleteListener(task -> {
                     showLoading(false);
                     if (task.isSuccessful()) {
                         Toast.makeText(RegisterActivity.this,
                                 "Registration successful!", Toast.LENGTH_SHORT).show();
-                        navigateToDashboard();
+                        // Navigate after a short delay
+                        new android.os.Handler(android.os.Looper.getMainLooper())
+                                .postDelayed(this::navigateToDashboard, 500);
                     } else {
+                        String errorMsg = task.getException() != null ?
+                                task.getException().getMessage() : "Unknown error";
                         Toast.makeText(RegisterActivity.this,
-                                "Failed to save user data", Toast.LENGTH_SHORT).show();
+                                "Failed to save user data: " + errorMsg, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

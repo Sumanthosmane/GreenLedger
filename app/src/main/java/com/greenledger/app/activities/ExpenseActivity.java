@@ -73,6 +73,7 @@ public class ExpenseActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         adapter = new ExpenseAdapter();
+        adapter.setDeleteListener(this::deleteExpense);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
@@ -107,15 +108,22 @@ public class ExpenseActivity extends AppCompatActivity {
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_expense, null);
 
         AutoCompleteTextView categoryAutoComplete = dialogView.findViewById(R.id.categoryAutoComplete);
+        AutoCompleteTextView cropAutoComplete = dialogView.findViewById(R.id.cropAutoComplete);
         TextInputEditText amountEditText = dialogView.findViewById(R.id.amountEditText);
         TextInputEditText descriptionEditText = dialogView.findViewById(R.id.descriptionEditText);
         TextInputEditText dateEditText = dialogView.findViewById(R.id.dateEditText);
 
         // Setup category dropdown
         String[] categories = getResources().getStringArray(R.array.expense_categories);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, categories);
-        categoryAutoComplete.setAdapter(adapter);
+        categoryAutoComplete.setAdapter(categoryAdapter);
+
+        // Setup crop dropdown
+        String[] crops = getResources().getStringArray(R.array.crop_types);
+        ArrayAdapter<String> cropAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, crops);
+        cropAutoComplete.setAdapter(cropAdapter);
 
         // Set current date
         dateEditText.setText(dateFormatter.format(calendar.getTime()));
@@ -144,13 +152,14 @@ public class ExpenseActivity extends AppCompatActivity {
 
         saveButton.setOnClickListener(v -> {
             String category = categoryAutoComplete.getText().toString().trim();
+            String crop = cropAutoComplete.getText().toString().trim();
             String amountStr = amountEditText.getText().toString().trim();
             String description = descriptionEditText.getText().toString().trim();
             String date = dateEditText.getText().toString().trim();
 
-            if (validateExpenseInput(category, amountStr, description)) {
+            if (validateExpenseInput(category, crop, amountStr, description)) {
                 double amount = Double.parseDouble(amountStr);
-                saveExpense(category, amount, description, date);
+                saveExpense(category, crop, amount, description, date);
                 dialog.dismiss();
             }
         });
@@ -160,9 +169,14 @@ public class ExpenseActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private boolean validateExpenseInput(String category, String amount, String description) {
+    private boolean validateExpenseInput(String category, String crop, String amount, String description) {
         if (TextUtils.isEmpty(category)) {
             Toast.makeText(this, "Please select a category", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (TextUtils.isEmpty(crop)) {
+            Toast.makeText(this, "Please select a crop", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -179,14 +193,14 @@ public class ExpenseActivity extends AppCompatActivity {
         return true;
     }
 
-    private void saveExpense(String category, double amount, String description, String date) {
+    private void saveExpense(String category, String crop, double amount, String description, String date) {
         String userId = firebaseHelper.getCurrentUserId();
         if (userId == null) return;
 
         String expenseId = firebaseHelper.getExpensesRef().push().getKey();
         if (expenseId == null) return;
 
-        Expense expense = new Expense(expenseId, userId, category, amount, description, date);
+        Expense expense = new Expense(expenseId, userId, category, crop, amount, description, date);
 
         firebaseHelper.getExpensesRef().child(expenseId).setValue(expense)
                 .addOnCompleteListener(task -> {
@@ -198,5 +212,26 @@ public class ExpenseActivity extends AppCompatActivity {
                                 "Failed to add expense", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void deleteExpense(String expenseId) {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete Expense")
+                .setMessage("Are you sure you want to delete this expense? This action cannot be undone.")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    firebaseHelper.getExpensesRef().child(expenseId).removeValue()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(ExpenseActivity.this,
+                                            "Expense deleted successfully", Toast.LENGTH_SHORT).show();
+                                    loadExpenses();
+                                } else {
+                                    Toast.makeText(ExpenseActivity.this,
+                                            "Failed to delete expense", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                })
+                .show();
     }
 }

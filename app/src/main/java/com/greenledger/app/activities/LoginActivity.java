@@ -79,12 +79,20 @@ public class LoginActivity extends AppCompatActivity {
                         String userId = firebaseHelper.getCurrentUserId();
                         if (userId != null) {
                             updateLastLogin(userId);
+                            // Navigate after a short delay to allow metadata update
+                            new android.os.Handler(android.os.Looper.getMainLooper())
+                                    .postDelayed(this::navigateToDashboard, 500);
+                        } else {
+                            showLoading(false);
+                            Toast.makeText(LoginActivity.this,
+                                    "Failed to get user ID", Toast.LENGTH_SHORT).show();
                         }
-                        navigateToDashboard();
                     } else {
                         showLoading(false);
+                        String errorMessage = task.getException() != null ?
+                                task.getException().getMessage() : "Unknown error";
                         Toast.makeText(LoginActivity.this,
-                                "Login failed: " + task.getException().getMessage(),
+                                "Login failed: " + errorMessage,
                                 Toast.LENGTH_LONG).show();
                     }
                 });
@@ -119,9 +127,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void updateLastLogin(String userId) {
-        // Update lastLogin timestamp in UserV2
+        // Update lastLogin timestamp in UserV2 with error handling
         firebaseHelper.getUsersV2Ref().child(userId).child("metadata")
-                .child("lastLogin").setValue(System.currentTimeMillis());
+                .child("lastLogin").setValue(System.currentTimeMillis())
+                .addOnFailureListener(e -> {
+                    // Log error but don't block login
+                    android.util.Log.e("LoginActivity", "Failed to update lastLogin", e);
+                    // Continue anyway - lastLogin is not critical
+                });
     }
 
     private void showLoading(boolean show) {

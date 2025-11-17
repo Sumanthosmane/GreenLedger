@@ -359,6 +359,7 @@ public class PermissionManager {
   "farmerId": "string",
   "farmId": "string (optional)",
   "cropId": "string (optional)",
+  "crop": "Rice|Sugarcane|Groundnut|Cotton|Sunflower|Arecanut|Coconut|Coffee|Pepper|Rubber|Banana|Chilli|Wheat",
   "expenseInfo": {
     "category": "Seeds|Fertilizers|Pesticides|Labour|Equipment|Transportation|Utilities|Other",
     "subcategory": "string",
@@ -389,7 +390,27 @@ public class PermissionManager {
 }
 ```
 
-#### 6. Enhanced Labour Collection
+#### 6. Raw Materials Collection
+```json
+{
+  "materialId": "string",
+  "userId": "string",
+  "name": "string",
+  "crop": "Rice|Sugarcane|Groundnut|Cotton|Sunflower|Arecanut|Coconut|Coffee|Pepper|Rubber|Banana|Chilli|Wheat",
+  "quantity": "number",
+  "unit": "kg|quintal|ton|piece|packet|bag|bottle",
+  "costPerUnit": "number",
+  "date": "string (dd/MM/yyyy)",
+  "totalCost": "number (calculated: quantity × costPerUnit)",
+  "metadata": {
+    "timestamp": "timestamp",
+    "createdAt": "timestamp",
+    "createdBy": "userId"
+  }
+}
+```
+
+#### 7. Enhanced Labour Collection
 ```json
 {
   "labourEntryId": "string",
@@ -683,6 +704,64 @@ public class PermissionManager {
 - Forecasting (ML-based, future)
 - Dashboard KPIs
 
+### Pie Chart Implementation (v1.5) with Legend Enhancement
+
+**Expense Distribution Pie Chart Enhancement**:
+- Displays expense categories with distinct colors
+- 12-color palette for different categories
+- Legend positioned at TOP of chart
+- Legend displayed in VERTICAL order (one by one)
+- Automatic color cycling for 12+ categories
+- Improved visual distinction and readability
+
+**Color Palette**:
+```
+Colors (in order):
+1. Green (#4CAF50)
+2. Orange (#FF9800)
+3. Blue (#2196F3)
+4. Red (#F44336)
+5. Purple (#9C27B0)
+6. Cyan (#00BCD4)
+7. Yellow (#FFEB3B)
+8. Deep Orange (#FF5722)
+9. Deep Purple (#673AB7)
+10. Indigo (#3F51B5)
+11. Teal (#009688)
+12. Lime (#C0CA33)
+```
+
+**Legend Configuration**:
+- Position: TOP (above chart)
+- Alignment: LEFT, TOP corner
+- Orientation: VERTICAL (one by one)
+- Font Size: 13f (bigger, more readable)
+- Word Wrap: Enabled
+- Draw Inside: False (legend outside pie area)
+
+**Implementation**:
+- Classes: `ReportGenerator` + `ReportActivity`
+- Array: `PIE_COLORS` (static int[])
+- Color assignment: `dataSet.setColors(colors)`
+- Legend formatting: `"Category: ₹Amount (Percentage%)"`
+- Slice spacing: 2f
+- Legend text size: 13f
+
+**Legend Entry Format**:
+- Shows category name
+- Shows amount in ₹ currency format
+- Shows percentage with 1 decimal place
+- Example: "Seeds: ₹5000 (25.0%)"
+
+**Features**:
+- Multi-color display with 12 distinct colors
+- Legend at top for easy reference
+- Vertical ordering (one category per line)
+- Large, readable font (13f)
+- Currency and percentage values
+- Professional appearance
+- Material Design compliant
+
 ---
 
 ## Security Considerations
@@ -697,17 +776,47 @@ public class PermissionManager {
    - Role-based permissions
    - Firebase security rules
    - Session management
+   - **User Data Isolation** (Added November 17, 2025)
+     - Each user can only access their own data
+     - All data models include `userId` field
+     - Queries filter by `userId` at application level
+     - Firebase rules enforce read/write permissions per user
+     - Multi-tenant architecture prevents data bleeding
 
-3. **Audit Trail**
+3. **Data Isolation Architecture**
+   - **Expense Management**: Filtered by `userId`
+   - **Raw Materials**: Filtered by `userId`
+   - **Labour Records**: Filtered by `userId`
+   - **Sales/Revenue**: Filtered by `userId` and `farmerId`
+   - **Reports & Analytics**: Calculate only from user-specific data
+   
+   **Implementation Details**:
+   ```java
+   // Query pattern for user-specific data
+   firebaseRef.orderByChild("userId")
+              .equalTo(currentUserId)
+              .addValueEventListener(listener);
+   
+   // All models include userId field
+   class Expense {
+       private String expenseId;
+       private String userId;  // Mandatory field
+       private String category;
+       // ...
+   }
+   ```
+
+4. **Audit Trail**
    - All financial transactions logged
    - User action tracking
    - Data modification history
+   - User ID recorded with each transaction
 
 ### Privacy
 - GDPR-like compliance
 - User consent for data sharing
-- Right to delete account
-- Data export capability
+- Right to delete account (removes all user's data)
+- Data export capability (user-specific data only)
 
 ---
 
@@ -745,6 +854,59 @@ public class PermissionManager {
 
 ---
 
+## Data Management Operations
+
+### Delete Operations
+
+Delete functionality has been implemented for all four data management modules using a consistent pattern:
+
+#### Expense Deletion
+- **Path**: `/expenses/{userId}/{expenseId}`
+- **Method**: Firebase `removeValue()`
+- **Trigger**: Delete button click in ExpenseAdapter
+- **Confirmation**: AlertDialog with warning message
+- **Refresh**: `loadExpenses()` reloads the list from Firebase
+- **Feedback**: Toast notification on success/failure
+
+#### Raw Material Deletion
+- **Path**: `/rawMaterials/{userId}/{materialId}`
+- **Method**: Firebase `removeValue()`
+- **Trigger**: Delete button click in RawMaterialAdapter
+- **Confirmation**: AlertDialog with warning message
+- **Refresh**: `loadMaterials()` reloads the list from Firebase
+- **Feedback**: Toast notification on success/failure
+
+#### Labour Entry Deletion
+- **Path**: `/labour/{userId}/{labourId}`
+- **Method**: Firebase `removeValue()`
+- **Trigger**: Delete button click in LabourAdapter
+- **Confirmation**: AlertDialog with warning message
+- **Refresh**: `loadLabourEntries()` reloads the list from Firebase
+- **Feedback**: Toast notification on success/failure
+
+#### Sales Deletion
+- **Path**: `/sales/{saleId}`
+- **Method**: Firebase `removeValue()`
+- **Trigger**: Delete button click in SalesAdapter
+- **Confirmation**: AlertDialog with warning message
+- **Refresh**: `loadSales()` reloads the list from Firebase
+- **Feedback**: Toast notification on success/failure
+
+#### UI Components
+All delete buttons use the following specifications:
+- **Icon**: `@drawable/ic_delete` (trash icon)
+- **Size**: 40dp width/height with 8dp padding
+- **Behavior**: `selectableItemBackgroundBorderless` ripple effect
+- **Position**: Top-right of each item card
+
+#### Error Handling
+- Failed deletions show "Failed to delete [item]" toast
+- Successful deletions show "[Item] deleted successfully" toast
+- List automatically refreshes on successful deletion
+- Database operation failures are caught and reported to user
+
+---
+
 ## Conclusion
 
 This technical specification provides a comprehensive roadmap for GreenLedger v2.0. The enhanced system will support farmers in making data-driven decisions, managing operations efficiently, and maintaining financial transparency.
@@ -758,6 +920,7 @@ This technical specification provides a comprehensive roadmap for GreenLedger v2
 ---
 
 **Document Control**
-- Last Updated: October 31, 2025
-- Next Review: November 15, 2025
+- Last Updated: November 16, 2025
+- Next Review: December 1, 2025
 - Approved By: Development Team
+- Enhancement: Raw Materials Crop & Date Fields Schema Added
